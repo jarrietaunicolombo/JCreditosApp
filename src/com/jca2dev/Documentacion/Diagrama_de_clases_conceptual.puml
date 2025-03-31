@@ -1,0 +1,202 @@
+@startuml
+title Modelo Conceptual -  Sistema de Créditos Financieros
+
+' ENUMERACION
+enum TipoCuota {
+  DIA
+  SEMANA
+  QUINCENA
+  MES
+}
+
+' ==================
+' CLASES PRINCIPALES
+' ==================
+
+class Usuario {
+  # codigo: String
+  # password: String
+  # fechaCreacion: LocalDateTime
+  # estado: String
+  # primerNombre: String
+  # segundoNombre: String
+  # primerApellido: String
+  # segundoApellido: String
+  # email: String
+  # rol : Rol
+}
+
+class Rol {
+  - id: String
+  - nombre: String
+  - descripcion: String
+  - icono: String
+  - estado: String
+  - fechaCreacion: LocalDateTime
+- - usuarios : List<Usuario>
+}
+
+class Prestamista {
+  - capital: double
+  - prestamos : List<Prestamo>
+  - inversiones : List<Inversiones>
+}
+
+
+class Deudor {
+  # numeroIdentificacion: String
+  # tipoIdentificacion: String
+  # fechaExpedicion: LocalDateTime
+  # lugarExpedicion: String
+  # direccion: String
+  # telefono: String
+  # ingresos: double
+  # foto: String
+  # genero: String
+  # fechaNacimiento: LocalDateTime
+  # score: int
+  # capacidadDeuda: double
+  # oficio: String
+  # estaEmpleado: boolean
+  # esIndependiente: boolean
+  # esPensionado: boolean
+  - prestamos ; List<Prestamo>
+}
+
+class Coodeudor {
+  - tieneViviendaPropia: boolean
+  - tienevehiculo: boolean
+  - prestamos : List<CoodeudorPrestamo>
+  
+}
+
+class Cobrador {
+  - numeroIdentificacion: String
+  - tipoIdentificacion: String
+  - fechaExpedicion: LocalDateTime
+  - lugarExpedicion: String
+  - genero: String
+  - foto: String
+  - direccion: String
+  - telefono: String
+  - vehiculo: String
+  - efectividad: double
+  - porcentajeGanancia: double
+  - pagos : List<CobradorPago>
+}
+
+class Inversion {
+  - id: String
+  - nombre: String
+  - monto: double
+  - procedencia: String
+  - saldo: double
+  - observaciones: String
+  - fechaCreacion: LocalDateTime
+  - prestamista : Prestamista
+  - prestamos : List<PrestamoInversion>
+}
+
+class Prestamo {
+  - id: String
+  - fechaSolicitud: LocalDateTime
+  - estado: String
+  - monto: double
+  - fechaDesembolso: LocalDateTime
+  - tasaInteres: double
+  - numeroCuotas: int
+  - tipoCuota: TipoCuota
+  - saldo: double
+  - observaciones: String
+  - prestamista : Prestamista
+  - deduor : Deudor
+  - coodeudores : List<CoodeudorPrestamo>
+  - inversiones : List<PrestamoInversion>
+  - pagos : List<Pago>
+
+}
+
+class Pago {
+  - id: String
+  - fechaCobro: LocalDateTime
+  - fechaPago: LocalDateTime
+  - monto: double
+  - valorPagado: double
+  - saldo: double
+  - numeroCuota: int
+  - observaciones: String
+  - prestamo : Prestamo
+  - cobradores : List<CobradorPago>
+}
+
+
+class IntentoCobro {
+  - exitoso: boolean
+  - fechaIntento: LocalDateTime
+  - valorPagado: float
+  - observaciones: String
+  - cobradorPago : CobradorPago
+}
+
+' ===================
+' RELACIONES AL FINAL
+' ===================
+
+' HERENCIAS 
+
+Usuario <|--  Prestamista
+Usuario <|--  Deudor
+Deudor <|--  Coodeudor
+Usuario <|--  Cobrador
+
+' UNO A MUCHOS
+
+Rol "1" --  "0..*" Usuario : asignar
+Prestamista "1" --  "0.." Inversion : poseer "1" - -  "0.." Prestamo : realizar
+Prestamo "0..*" --  "1"  Prestamista : prestar
+Prestamo "0..*" --  "1" Deudor : otorgar
+Prestamo *--  Pago : generar
+
+' ===========================
+' CLASES ASOCIACIÓN (N:N)
+' ===========================
+
+class PrestamoInversion {
+  - montoUtilizado: double
+  - inversion : Inversion
+  - prestamo : Prestamo
+}
+
+class CobradorPago {
+  - fechaAsignacion: LocalDateTime
+  - observaciones: String
+  - intentoCobro :  List<IntentoCobro>
+  - cobrador : Cobrador
+  - pago : Pago
+
+}
+
+class CoodeudorPrestamo {
+  - relacionDeudor: String
+  - activo: boolean
+  - fechaAsignacion: LocalDateTime
+  - coodeudor : Coodeudor;
+  - prestamo : Prestamo;
+}
+
+' Clase asociación entre Prestamo y Inversion
+Prestamo "*" --  "1.." Inversion
+(Prestamo, Inversion) .. PrestamoInversion : utilizar
+
+' Clase asociación entre Cobrador y Pago
+Cobrador "1..*" --  "*" Pago
+(Cobrador, Pago) .. CobradorPago : gestionar
+
+' Clase asociación entre Coodeudor y Prestamo
+Prestamo "*" --  "1..*" Coodeudor
+(Prestamo, Coodeudor) .. CoodeudorPrestamo : respaldar
+
+' Relación de IntentoCobro con Cobrador y Pago
+IntentoCobro "0..*" --  "1" CobradorPago : realizadoPor
+
+@enduml
