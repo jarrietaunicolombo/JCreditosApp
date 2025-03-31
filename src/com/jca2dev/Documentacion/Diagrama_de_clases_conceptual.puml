@@ -1,7 +1,7 @@
 @startuml
 title Modelo Conceptual -  Sistema de Créditos Financieros
 
-' ENUM
+' ENUMERACION
 enum TipoCuota {
   DIA
   SEMANA
