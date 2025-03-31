@@ -1,0 +1,7 @@
+@startuml
+    class Rol{
+        - int id;
+        - String nombre;
+        - String descripcion;
+    }
+@enduml
