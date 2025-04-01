@@ -9,14 +9,17 @@ import java.util.Objects;
  */
 public class CodeudorPrestamo {
 
+    // propidades de instancia u objeto
     private int id;
     private String relacionDeudor;
     private boolean activo;
     private LocalDateTime fechaAsignacion;
+   
     //Relaciones
     private Codeudor codeudor;
     private Prestamo prestamo;
 
+    // Constructores
     public CodeudorPrestamo(String relacionDeudor, Codeudor coodeudor, Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener ID invalido.";
@@ -35,6 +38,7 @@ public class CodeudorPrestamo {
         this.prestamo = prestamo;
     }
 
+    //    Gets y Sets
     public int getId() {
         return id;
     }
@@ -71,6 +75,8 @@ public class CodeudorPrestamo {
         return prestamo;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void setPrestamo(Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {
             var mensaje = "El codeudor no puede ser nulo ni tener Id invacío.";

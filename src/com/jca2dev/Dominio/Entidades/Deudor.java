@@ -1,5 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.GeneroEnum;
+import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,15 +11,16 @@ import java.util.List;
  */
 public class Deudor extends Usuario {
     
+      // propidades de instancia u objeto
     protected String numeroIdentificacion;
-    protected String tipoIdentificacion;
+    protected TipoDeIdentificacionEnum tipoIdentificacion;
     protected LocalDateTime fechaExpedicion;
     protected String lugarExpedicion;
     protected String direccion;
     protected String telefono;
     protected double ingresos;
     protected String foto;
-    protected String genero;
+    protected GeneroEnum genero;
     protected LocalDateTime fechaNacimiento;
     protected int score;
     protected double capacidadDeuda;
@@ -26,10 +29,29 @@ public class Deudor extends Usuario {
     protected boolean esIndependiente;
     protected boolean esPensionado;
     
+    //     Relaciones
     private List<Prestamo> prestamos;
     
+    // Constructores
     public Deudor(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+    }
+
+    //    Gets y Sets
+    public TipoDeIdentificacionEnum getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(TipoDeIdentificacionEnum tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public GeneroEnum getGenero() {
+        return genero;
+    }
+
+    public void setGenero(GeneroEnum genero) {
+        this.genero = genero;
     }
     
     public String getNumeroIdentificacion() {
@@ -38,14 +60,6 @@ public class Deudor extends Usuario {
     
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
-    }
-    
-    public String getTipoIdentificacion() {
-        return tipoIdentificacion;
-    }
-    
-    public void setTipoIdentificacion(String tipoIdentificacion) {
-        this.tipoIdentificacion = tipoIdentificacion;
     }
     
     public LocalDateTime getFechaExpedicion() {
@@ -94,14 +108,6 @@ public class Deudor extends Usuario {
     
     public void setFoto(String foto) {
         this.foto = foto;
-    }
-    
-    public String getGenero() {
-        return genero;
-    }
-    
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
     
     public LocalDateTime getFechaNacimiento() {
@@ -167,6 +173,7 @@ public class Deudor extends Usuario {
     public void setPrestamos(List<Prestamo> prestamos) {
         this.prestamos = prestamos;
     }
+    // Metodos para garantizar las restrcciones de las relaciones 
     
     public void agregarPrestamo(Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {

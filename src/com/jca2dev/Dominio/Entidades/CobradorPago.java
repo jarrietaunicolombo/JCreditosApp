@@ -18,6 +18,7 @@ public class CobradorPago {
     private Cobrador cobrador;
     private Pago pago;
 
+    // Constructor
     public CobradorPago(Cobrador cobrador, Pago pago) {
         if (cobrador == null || cobrador.getCodigo() == null
                 || cobrador.getCodigo().trim().isEmpty()) {
@@ -33,6 +34,7 @@ public class CobradorPago {
         this.pago = pago;
     }
 
+    // Gets y Sets
     public int getId() {
         return id;
     }
@@ -69,20 +71,11 @@ public class CobradorPago {
         return cobrador;
     }
 
-    public void setCobrador(Cobrador cobrador) {
-        if (cobrador == null || cobrador.getCodigo() == null
-                || cobrador.getCodigo().trim().isEmpty()) {
-            var mensaje = "El Cobrador no puede ser null, no tener codigo invalido";
-            throw new IllegalArgumentException(mensaje);
-        }
-        this.cobrador = cobrador;
-        cobrador.agregarPago(this);
-    }
-
     public Pago getPago() {
         return pago;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones
     public void setPago(Pago pago) {
         if (pago == null || pago.getId() <= 0) {
             var mensaje = "El Pago no puede ser null, no tener Id invalido";
@@ -91,6 +84,16 @@ public class CobradorPago {
         this.pago = pago;
         pago.agregarCobrador(this);
 
+    }
+
+    public void setCobrador(Cobrador cobrador) {
+        if (cobrador == null || cobrador.getCodigo() == null
+                || cobrador.getCodigo().trim().isEmpty()) {
+            var mensaje = "El Cobrador no puede ser null, no tener codigo invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        this.cobrador = cobrador;
+        cobrador.agregarPago(this);
     }
 
     void sincronizarCobrador(Cobrador cobrador) {

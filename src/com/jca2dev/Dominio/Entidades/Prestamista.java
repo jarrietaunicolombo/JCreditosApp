@@ -8,15 +8,19 @@ import java.util.List;
  */
 public class Prestamista extends Usuario {
 
+     // propidades de instancia u objeto
     private double capital;
-
+    
+    // Propiedades de Relaciones 
     private List<Prestamo> prestamos;
     private List<Inversion> inversiones;
 
+    // Constructor
     public Prestamista(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
     }
 
+    // Gets y Sets
     public double getCapital() {
         return capital;
     }
@@ -41,6 +45,9 @@ public class Prestamista extends Usuario {
         this.inversiones = inversiones;
     }
 
+    
+    // Metodos para garantizar las restrcciones de las relaciones
+    
     void agregarInversion(Inversion inversion) {
         if (inversion == null || inversion.getId() <= 0
                 || inversion.getMonto() <= 0) {

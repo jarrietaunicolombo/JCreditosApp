@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.EstadoDePrestamoEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeCuotaEnum;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,9 +11,10 @@ import java.util.List;
  */
 public class Prestamo {
 
+    //  // propidades de instancia u objeto
     private int id;
     private LocalDateTime fechaSolicitud;
-    private String estado;
+    private EstadoDePrestamoEnum estado;
     private double monto;
     private LocalDateTime fechaDesembolso;
     private double tasaInteres;
@@ -28,6 +30,7 @@ public class Prestamo {
     private List<PrestamoInversion> inversiones;
     private List<Pago> pagos;
 
+    // Constructores
     public Prestamo(int id, double monto, double tasaInteres, int numeroCuotas,
             TipoDeCuotaEnum tipoDeCuota, Prestamista prestamista, Deudor deudor) {
         this.id = id;
@@ -36,12 +39,21 @@ public class Prestamo {
         this.numeroCuotas = numeroCuotas;
         this.tipoDeCuota = tipoDeCuota;
         this.fechaSolicitud = LocalDateTime.now();
-        this.estado = "PENDIENTE";
+        this.estado = estado.PENDIENTE;
         this.saldo = monto;
         this.prestamista = prestamista;
         this.deudor = deudor;
     }
 
+    // Gets y Sets
+    public EstadoDePrestamoEnum getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoDePrestamoEnum estado) {
+        this.estado = estado;
+    }
+    
     public int getId() {
         return id;
     }
@@ -58,13 +70,7 @@ public class Prestamo {
         this.fechaSolicitud = fechaSolicitud;
     }
 
-    public String getEstado() {
-        return estado;
-    }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     public double getMonto() {
         return monto;
@@ -175,6 +181,8 @@ public class Prestamo {
         this.pagos = pagos;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones
+    
     public void agregarCodeudor(CodeudorPrestamo codeudorPrestamo) {
         if (codeudorPrestamo == null || codeudorPrestamo.getId() <= 0
                 || codeudorPrestamo.getCodeudor().getCodigo().trim().isEmpty()) {

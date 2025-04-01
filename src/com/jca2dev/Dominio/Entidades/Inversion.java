@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Inversion {
 
+    // propidades de instancia u objeto
     private int id;
     private String nombre;
     private double monto;
@@ -17,10 +18,11 @@ public class Inversion {
     private String observaciones;
     private LocalDateTime fechaCreacion;
 
-//     Relaciones 
+    //     Relaciones 
     private Prestamista prestamista;
     private List<PrestamoInversion> prestamos;
 
+    // Constructores
     public Inversion(int id, String nombre, double monto, Prestamista prestamista) {
         if (prestamista == null || prestamista.getCodigo().trim().isEmpty()) {
             var mensaje = "El Prestamista no puede ser nulo o tener un Codigo invalido";
@@ -34,6 +36,7 @@ public class Inversion {
         this.prestamista = prestamista;
     }
 
+    // Gets y Sets
     public int getId() {
         return id;
     }
@@ -94,6 +97,8 @@ public class Inversion {
         return prestamista;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void setPrestamista(Prestamista prestamista) {
         if (prestamista == null) {
             throw new IllegalArgumentException("Prestamista no puede ser nulo");
@@ -123,15 +128,15 @@ public class Inversion {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-        if (prestamoInversion.getInversion().getId() != id){
+
+        if (prestamoInversion.getInversion().getId() != id) {
             var mensaje = "La Inversion del Prestamo no corresponde a la Inversion asignada";
             throw new IllegalArgumentException(mensaje);
         }
-        
+
         var existe = this.prestamos.stream()
-                .anyMatch(p -> p != null &&
-                p.getId() == prestamoInversion.getPrestamo().getId());
+                .anyMatch(p -> p != null
+                && p.getId() == prestamoInversion.getPrestamo().getId());
         if (!existe) {
             this.prestamos.add(prestamoInversion);
         }
