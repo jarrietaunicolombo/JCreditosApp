@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class Cobrador extends Usuario {
 
     private String numeroIdentificacion;
-    private String tipoIdentificacion;
+    private TipoDeIdentificacionEnum tipoIdentificacion;
     private LocalDateTime fechaExpedicion;
     private String lugarExpedicion;
     private String genero;
@@ -24,8 +25,18 @@ public class Cobrador extends Usuario {
     // Relaciones 
     private List<CobradorPago> pagos;
 
+    // Constructor
     public Cobrador(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+    }
+
+    // Gets y Sets
+    public TipoDeIdentificacionEnum getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(TipoDeIdentificacionEnum tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
     public String getNumeroIdentificacion() {
@@ -34,14 +45,6 @@ public class Cobrador extends Usuario {
 
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
-    }
-
-    public String getTipoIdentificacion() {
-        return tipoIdentificacion;
-    }
-
-    public void setTipoIdentificacion(String tipoIdentificacion) {
-        this.tipoIdentificacion = tipoIdentificacion;
     }
 
     public LocalDateTime getFechaExpedicion() {
@@ -124,6 +127,8 @@ public class Cobrador extends Usuario {
         this.pagos = pagos;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones
+    
     public void agregarPago(CobradorPago pago) {
         if (pago == null || pago.getPago().getId() <= 0) {
             var mensaje = "El Pago no puede ser nulo o tener un ID invalido";

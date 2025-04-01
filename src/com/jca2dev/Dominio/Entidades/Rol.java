@@ -5,21 +5,25 @@ import java.util.List;
 
 public class Rol {
 
+    // Propiedades de instancia u objeto
     private int id;
     private String nombre;
     private String descripcion;
     private String icono;
     private String estado;
+    
+    //     Relaciones
     private LocalDateTime fechaCreacion;
     private List<Usuario> usuarios;
 
+    // Constructores
     public Rol(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
         this.estado = "ACTIVO";
     }
 
-    // GET y SET
+    //    Gets y Sets
     public int getId() {
         return id;
     }
@@ -76,6 +80,8 @@ public class Rol {
         this.usuarios = usuarios;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void agregarUsuario(Usuario usuario) {
         if (usuario == null || usuario.getCodigo() == null || usuario.getCodigo()
                 .trim().isEmpty()) {

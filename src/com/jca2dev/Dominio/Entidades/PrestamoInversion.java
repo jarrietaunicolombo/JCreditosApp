@@ -6,13 +6,15 @@ package com.jca2dev.Dominio.Entidades;
  */
 public class PrestamoInversion {
 
+    // Propiedades de instancia u objeto
     private int id;
     private double montoUtilizado;
 
-//     Relaciones comentadas
+    //     Relaciones 
     private Inversion inversion;
     private Prestamo prestamo;
 
+    // Constructores
     public PrestamoInversion(double montoUtilizado, Inversion inversion, Prestamo prestamo) {
         if (inversion == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
@@ -29,6 +31,7 @@ public class PrestamoInversion {
         this.prestamo = prestamo;
     }
 
+    //    Gets y Sets
     public int getId() {
         return id;
     }
@@ -49,6 +52,12 @@ public class PrestamoInversion {
         return inversion;
     }
 
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
+
+   // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void setInversion(Inversion inversion) {
         if (inversion == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
@@ -56,10 +65,6 @@ public class PrestamoInversion {
         }
         this.inversion = inversion;
         inversion.agregarPrestamo(this);
-    }
-
-    public Prestamo getPrestamo() {
-        return prestamo;
     }
 
     public void setPrestamo(Prestamo prestamo) {

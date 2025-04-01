@@ -8,17 +8,21 @@ import java.util.List;
  */
 public class Codeudor extends Deudor {
 
+    // propidades de instancia u objeto
     private int id;
     private boolean tieneViviendaPropia;
     private boolean tieneVehiculo;
 
+    //     Relaciones
     private List<CodeudorPrestamo> prestamos;
 
+    // Constructores
     public Codeudor(String codigo, String primerNombre, String primerApellido,
             String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
     }
 
+    //    Gets y Sets
     public boolean isTieneViviendaPropia() {
         return tieneViviendaPropia;
     }
@@ -43,6 +47,8 @@ public class Codeudor extends Deudor {
         this.prestamos = prestamos;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void agregarCodeudorPrestamo(CodeudorPrestamo codeudorPrestamo) {
         if (codeudorPrestamo == null || codeudorPrestamo.getId() <= 0
                 || codeudorPrestamo.getPrestamo().getId() <= 0) {

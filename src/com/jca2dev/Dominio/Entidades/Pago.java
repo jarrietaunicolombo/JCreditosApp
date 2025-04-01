@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.EstadoDePagoEnum;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public class Pago {
 
+     // propidades de instancia u objeto
     private int id;
     private LocalDateTime fechaCobro;
     private LocalDateTime fechaPago;
@@ -17,11 +19,13 @@ public class Pago {
     private double saldo;
     private int numeroCuota;
     private String observaciones;
+    private EstadoDePagoEnum estado;
 
-//     Relaciones comentadas
+    //     Relaciones comentadas
     private Prestamo prestamo;
     private List<CobradorPago> cobradores;
 
+    // Constructores
     public Pago(int id, int numeroCuota, double monto, Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
@@ -36,6 +40,16 @@ public class Pago {
         this.prestamo = prestamo;
     }
 
+    // Sets y Gets
+    public EstadoDePagoEnum getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoDePagoEnum estado) {
+        this.estado = estado;
+    }
+
+    
     public int getId() {
         return id;
     }
@@ -105,6 +119,8 @@ public class Pago {
         return prestamo;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void setPrestamo(Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  */
 public class Usuario {
 
+    // Propiedades de instancia u objeto
     protected String codigo;
     protected String password;
     protected LocalDateTime fechaCreacion;
@@ -17,8 +18,11 @@ public class Usuario {
     protected String primerApellido;
     protected String segundoApellido;
     protected String email;
+    
+    //     Relaciones
     protected Rol rol;
 
+    // Constructores
     public Usuario(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
             var menesaje = "Al crear un usuario se requiere un rol valido";
@@ -33,7 +37,7 @@ public class Usuario {
         this.estado = "ACTIVO";
     }
 
-    // GET Y SET
+    // Gets y Sets
     public String getCodigo() {
         return codigo;
     }
@@ -110,6 +114,8 @@ public class Usuario {
         return rol;
     }
 
+    // Metodos para garantizar las restrcciones de las relaciones 
+    
     public void setRol(Rol rol) {
         if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
             var menesaje = "Al crear un usuario se requiere un rol valido";
