@@ -1,7 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
- import java.util.List;
+import java.util.List;
 
 public class Rol {
 
@@ -10,7 +10,7 @@ public class Rol {
     private String descripcion;
     private String icono;
     private String estado;
-    private LocalDateTime fechaCreacion; 
+    private LocalDateTime fechaCreacion;
     private List<Usuario> usuarios;
 
     public Rol(String nombre) {
@@ -20,16 +20,6 @@ public class Rol {
     }
 
     // GET y SET
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-    
-    
-
     public int getId() {
         return id;
     }
@@ -78,23 +68,46 @@ public class Rol {
         this.fechaCreacion = fechaCreacion;
     }
 
-    // public List<Usuario> getUsuarios() {
-    //     return usuarios;
-    // }
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
 
-    // public void setUsuarios(List<Usuario> usuarios) {
-    //     this.usuarios = usuarios;
-    // }
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public void agregarUsuario(Usuario usuario) {
+        if (usuario == null || usuario.getCodigo() == null || usuario.getCodigo()
+                .trim().isEmpty()) {
+            var mensaje = "El Usuario no puede ser nulo ni tener codigo invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        if (usuario.getRol().getId() != this.id)
+        {
+            var mensaje = "El Usuario no puede al Rol asignado";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        var existe = this.usuarios.stream()
+                .anyMatch(u -> u.getCodigo().equals(usuario.getCodigo()));
+        if(!existe){
+            this.usuarios.add(usuario);
+        }
+        
+        usuario.sincronizarRol(this);
+    }
 
     @Override
     public String toString() {
-        return "Rol\n" +
-               "-------------------------\n" +
-               "ID: " + id + "\n" +
-               "Nombre: " + nombre + "\n" +
-               "Descripción: " + descripcion + "\n" +
-               "Icono: " + icono + "\n" +
-               "Estado: " + estado + "\n" +
-               "Fecha de creación: " + fechaCreacion + "\n";
+        return "Rol\n"
+                + "-------------------------\n"
+                + "ID: " + id + "\n"
+                + "Nombre: " + nombre + "\n"
+                + "Descripción: " + descripcion + "\n"
+                + "Icono: " + icono + "\n"
+                + "Estado: " + estado + "\n"
+                + "Fecha de creación: " + fechaCreacion + "\n"
+                + "Usuarios: " + usuarios.size() + "\n";
     }
-} 
+}

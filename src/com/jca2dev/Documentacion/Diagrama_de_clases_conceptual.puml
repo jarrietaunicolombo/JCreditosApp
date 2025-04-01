@@ -188,7 +188,7 @@ Prestamo *--  Pago : generar
 
 
 ' Relacion Clase asociación entre Prestamo y Inversion
-Prestamo "*" --  "1.." Inversion
+Prestamo "*" --  "1..*" Inversion
 (Prestamo, Inversion) .. PrestamoInversion : utilizar
 
 ' Relacion Clase asociación entre Cobrador y Pago

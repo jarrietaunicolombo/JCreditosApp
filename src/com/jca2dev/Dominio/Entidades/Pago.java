@@ -1,7 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+import java.util.List;
 
 /**
  *
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 public class Pago {
 
-    private String id;
+    private int id;
     private LocalDateTime fechaCobro;
     private LocalDateTime fechaPago;
     private double monto;
@@ -18,25 +18,29 @@ public class Pago {
     private int numeroCuota;
     private String observaciones;
 
-    // Relaciones comentadas
-    // private Prestamo prestamo;
-    // private List<CobradorPago> cobradores;
+//     Relaciones comentadas
+    private Prestamo prestamo;
+    private List<CobradorPago> cobradores;
 
-    public Pago(String id, int numeroCuota, double monto /*, Prestamo prestamo */) {
+    public Pago(int id, int numeroCuota, double monto, Prestamo prestamo) {
+        if (prestamo == null || prestamo.getId() <= 0) {
+            var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
         this.id = id;
         this.numeroCuota = numeroCuota;
         this.monto = monto;
         this.valorPagado = 0;
         this.saldo = monto;
         this.fechaCobro = LocalDateTime.now();
-        // this.prestamo = prestamo;
+        this.prestamo = prestamo;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -97,35 +101,79 @@ public class Pago {
         this.observaciones = observaciones;
     }
 
-    // public Prestamo getPrestamo() {
-    //     return prestamo;
-    // }
+    public Prestamo getPrestamo() {
+        return prestamo;
+    }
 
-    // public void setPrestamo(Prestamo prestamo) {
-    //     this.prestamo = prestamo;
-    // }
+    public void setPrestamo(Prestamo prestamo) {
+        if (prestamo == null || prestamo.getId() <= 0) {
+            var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        this.prestamo = prestamo;
+        prestamo.agregarPago(this);
+    }
 
-    // public List<CobradorPago> getCobradores() {
-    //     return cobradores;
-    // }
+    public void sincronizarPrestamo(Prestamo prestamo) {
+        if (prestamo == null || prestamo.getId() <= 0) {
+            var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        this.prestamo = prestamo;
+    }
 
-    // public void setCobradores(List<CobradorPago> cobradores) {
-    //     this.cobradores = cobradores;
-    // }
+    public List<CobradorPago> getCobradores() {
+        return cobradores;
+    }
+
+    public void setCobradores(List<CobradorPago> cobradores) {
+        this.cobradores = cobradores;
+    }
+
+    void agregarCobrador(CobradorPago cobrador) {
+        if (cobrador == null || cobrador.getId() <= 0
+                || cobrador.getCobrador().getCodigo().trim().isEmpty()) {
+            var mensaje = "El Cobrador no puede ser null, no tener Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        if (cobrador.getPago().getPrestamo().getId() != this.getPrestamo().getId())
+        {
+            var mensaje = "El Prestamo no correponde al Pago asignado";
+            throw new IllegalArgumentException(mensaje);
+        } 
+        
+        if (cobrador.getPago().getId() != this.id)
+        {
+            var mensaje = "El pago no correponde al Pago asignado";
+            throw new IllegalArgumentException(mensaje);
+        } 
+        
+        var existe = this.cobradores.stream()
+                .anyMatch(c -> c != null && 
+                c.getCobrador().getCodigo()
+                .equalsIgnoreCase(cobrador.getCobrador().getCodigo()));
+        
+        if (!existe) {
+            this.cobradores.add(cobrador);
+        }
+        cobrador.sincronizarPago(this);
+    }
 
     @Override
     public String toString() {
-        return "Pago\n" +
-               "-----------------\n" +
-               "ID: " + id + "\n" +
-               "Fecha Cobro: " + fechaCobro + "\n" +
-               "Fecha Pago: " + fechaPago + "\n" +
-               "Monto: " + monto + "\n" +
-               "Valor Pagado: " + valorPagado + "\n" +
-               "Saldo: " + saldo + "\n" +
-               "Número Cuota: " + numeroCuota + "\n" +
-               "Observaciones: " + observaciones + "\n";
-               // + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n"
-               // + "Cobradores asignados: " + (cobradores != null ? cobradores.size() : 0) + "\n";
+        return "Pago\n"
+                + "-----------------\n"
+                + "ID: " + id + "\n"
+                + "Fecha Cobro: " + fechaCobro + "\n"
+                + "Fecha Pago: " + fechaPago + "\n"
+                + "Monto: " + monto + "\n"
+                + "Valor Pagado: " + valorPagado + "\n"
+                + "Saldo: " + saldo + "\n"
+                + "Número Cuota: " + numeroCuota + "\n"
+                + "Observaciones: " + observaciones + "\n"
+                + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n"
+                + "Cobradores asignados: " + (cobradores != null ? cobradores.size() : 0) + "\n";
     }
+
 }

@@ -19,13 +19,11 @@ public class Usuario {
     protected String email;
     protected Rol rol;
 
-    public Usuario(String codigo, String primerNombre, String primerApellido, String email, Rol rol) 
-    {
-        if(rol == null || rol.getId() <=0 || rol.getNombre().trim().isEmpty())
-         {
-             var menesaje = "Al crear un usuario se requiere un rol valido";
-             throw new IllegalArgumentException(menesaje);
-         }
+    public Usuario(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
+        if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+            var menesaje = "Al crear un usuario se requiere un rol valido";
+            throw new IllegalArgumentException(menesaje);
+        }
         this.codigo = codigo;
         this.primerNombre = primerNombre;
         this.primerApellido = primerApellido;
@@ -35,20 +33,7 @@ public class Usuario {
         this.estado = "ACTIVO";
     }
 
-     // GET Y SET
-     public Rol getRol() {
-         return rol;
-     }
-
-     public void setRol(Rol rol) {
-         if(rol == null || rol.getId() <=0 || rol.getNombre().trim().isEmpty())
-         {
-             var menesaje = "Al crear un usuario se requiere un rol valido";
-             throw new IllegalArgumentException(menesaje);
-         }
-         this.rol = rol;
-     }
-
+    // GET Y SET
     public String getCodigo() {
         return codigo;
     }
@@ -121,18 +106,41 @@ public class Usuario {
         this.email = email;
     }
 
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+            var menesaje = "Al crear un usuario se requiere un rol valido";
+            throw new IllegalArgumentException(menesaje);
+        }
+        this.rol = rol;
+        rol.agregarUsuario(this);
+    }
+
+    void sincronizarRol(Rol aThis) {
+         if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+            var menesaje = "Al crear un usuario se requiere un rol valido";
+            throw new IllegalArgumentException(menesaje);
+        }
+        this.rol = rol;
+    }
     
     @Override
     public String toString() {
-        return "Usuario\n" +
-               "--------------------------\n" +
-               "Codigo           : " + codigo + "\n" +
-               "Primer Nombre    : " + primerNombre + "\n" +
-               "Segundo Nombre   : " + segundoNombre + "\n" +
-               "Primer Apellido  : " + primerApellido + "\n" +
-               "Segundo Apellido : " + segundoApellido + "\n" +
-               "Email            : " + email + "\n" +
-               "Fecha Creación   : " + fechaCreacion + "\n" +
-               "Estado           : " + estado + "\n";
+        return "Usuario\n"
+                + "--------------------------\n"
+                + "Codigo           : " + codigo + "\n"
+                + "Primer Nombre    : " + primerNombre + "\n"
+                + "Segundo Nombre   : " + segundoNombre + "\n"
+                + "Primer Apellido  : " + primerApellido + "\n"
+                + "Segundo Apellido : " + segundoApellido + "\n"
+                + "Email            : " + email + "\n"
+                + "Fecha Creación   : " + fechaCreacion + "\n"
+                + "Estado           : " + estado + "\n"
+                + "Rol              : " + rol.getNombre() + "\n";
     }
-}    
+
+    
+}

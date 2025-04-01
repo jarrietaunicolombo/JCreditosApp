@@ -1,7 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+import java.util.List;
 
 /**
  *
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 public class Inversion {
 
-    private String id;
+    private int id;
     private String nombre;
     private double monto;
     private String procedencia;
@@ -17,23 +17,28 @@ public class Inversion {
     private String observaciones;
     private LocalDateTime fechaCreacion;
 
-    // Relaciones comentadas
-    // private Prestamista prestamista;
-    // private List<PrestamoInversion> prestamos;
+//     Relaciones 
+    private Prestamista prestamista;
+    private List<PrestamoInversion> prestamos;
 
-    public Inversion(String id, String nombre, double monto) {
+    public Inversion(int id, String nombre, double monto, Prestamista prestamista) {
+        if (prestamista == null || prestamista.getCodigo().trim().isEmpty()) {
+            var mensaje = "El Prestamista no puede ser nulo o tener un Codigo invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
         this.id = id;
         this.nombre = nombre;
         this.monto = monto;
         this.fechaCreacion = LocalDateTime.now();
         this.saldo = monto;
+        this.prestamista = prestamista;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -85,34 +90,66 @@ public class Inversion {
         this.fechaCreacion = fechaCreacion;
     }
 
-    // public Prestamista getPrestamista() {
-    //     return prestamista;
-    // }
+    public Prestamista getPrestamista() {
+        return prestamista;
+    }
 
-    // public void setPrestamista(Prestamista prestamista) {
-    //     this.prestamista = prestamista;
-    // }
+    public void setPrestamista(Prestamista prestamista) {
+        if (prestamista == null) {
+            throw new IllegalArgumentException("Prestamista no puede ser nulo");
+        }
+        this.prestamista = prestamista;
+        prestamista.agregarInversion(this);
+    }
 
-    // public List<PrestamoInversion> getPrestamos() {
-    //     return prestamos;
-    // }
+    void sincronizarPrestamista(Prestamista prestamista) {
+        if (prestamista == null) {
+            throw new IllegalArgumentException("Prestamista inválido");
+        }
+        this.prestamista = prestamista;
+    }
 
-    // public void setPrestamos(List<PrestamoInversion> prestamos) {
-    //     this.prestamos = prestamos;
-    // }
+    public List<PrestamoInversion> getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(List<PrestamoInversion> prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    public void agregarPrestamo(PrestamoInversion prestamoInversion) {
+        if (prestamoInversion == null || prestamoInversion.getId() <= 0
+                || prestamoInversion.getPrestamo().getId() <= 0) {
+            var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        if (prestamoInversion.getInversion().getId() != id){
+            var mensaje = "La Inversion del Prestamo no corresponde a la Inversion asignada";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        var existe = this.prestamos.stream()
+                .anyMatch(p -> p != null &&
+                p.getId() == prestamoInversion.getPrestamo().getId());
+        if (!existe) {
+            this.prestamos.add(prestamoInversion);
+        }
+        prestamoInversion.sincronizarInversion(this);
+    }
 
     @Override
     public String toString() {
-        return "Inversion\n" +
-               "-----------------\n" +
-               "ID: " + id + "\n" +
-               "Nombre: " + nombre + "\n" +
-               "Monto: " + monto + "\n" +
-               "Procedencia: " + procedencia + "\n" +
-               "Saldo: " + saldo + "\n" +
-               "Observaciones: " + observaciones + "\n" +
-               "Fecha de Creación: " + fechaCreacion + "\n";
-               // + "Prestamista: " + (prestamista != null ? prestamista.getCodigo() : "null") + "\n"
-               // + "Cantidad de préstamos: " + (prestamos != null ? prestamos.size() : 0) + "\n";
+        return "Inversion\n"
+                + "-----------------\n"
+                + "ID: " + id + "\n"
+                + "Nombre: " + nombre + "\n"
+                + "Monto: " + monto + "\n"
+                + "Procedencia: " + procedencia + "\n"
+                + "Saldo: " + saldo + "\n"
+                + "Observaciones: " + observaciones + "\n"
+                + "Fecha de Creación: " + fechaCreacion + "\n"
+                + "Prestamista: " + (prestamista != null ? prestamista.getCodigo() : "null") + "\n"
+                + "Cantidad de préstamos: " + (prestamos != null ? prestamos.size() : 0) + "\n";
     }
 }
