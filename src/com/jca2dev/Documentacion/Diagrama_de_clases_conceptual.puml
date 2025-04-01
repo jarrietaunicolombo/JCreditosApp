@@ -152,7 +152,7 @@ Usuario <|--  Cobrador
 ' UNO A MUCHOS
 
 Rol "1" --  "0..*" Usuario : asignar
-Prestamista "1" --  "0.." Inversion : poseer "1" - -  "0.." Prestamo : realizar
+Prestamista "1" --  "0.." Inversion : poseer 
 Prestamo "0..*" --  "1"  Prestamista : prestar
 Prestamo "0..*" --  "1" Deudor : otorgar
 Prestamo *--  Pago : generar
@@ -184,15 +184,15 @@ class CoodeudorPrestamo {
   - prestamo : Prestamo;
 }
 
-' Clase asociación entre Prestamo y Inversion
+' Relacion Clase asociación entre Prestamo y Inversion
 Prestamo "*" --  "1.." Inversion
 (Prestamo, Inversion) .. PrestamoInversion : utilizar
 
-' Clase asociación entre Cobrador y Pago
+' Relacion Clase asociación entre Cobrador y Pago
 Cobrador "1..*" --  "*" Pago
 (Cobrador, Pago) .. CobradorPago : gestionar
 
-' Clase asociación entre Coodeudor y Prestamo
+' Relacion Clase asociación entre Coodeudor y Prestamo
 Prestamo "*" --  "1..*" Coodeudor
 (Prestamo, Coodeudor) .. CoodeudorPrestamo : respaldar
 
