@@ -1,7 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+import java.util.List;
 
 /**
  *
@@ -21,11 +21,11 @@ public class Cobrador extends Usuario {
     private double efectividad;
     private double porcentajeGanancia;
 
-    // Relaciones comentadas
-    // private List<CobradorPago> pagos;
+    // Relaciones 
+    private List<CobradorPago> pagos;
 
-    public Cobrador(String codigo, String primerNombre, String primerApellido, String email) {
-        super(codigo, primerNombre, primerApellido, email);
+    public Cobrador(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
+        super(codigo, primerNombre, primerApellido, email, rol);
     }
 
     public String getNumeroIdentificacion() {
@@ -116,29 +116,52 @@ public class Cobrador extends Usuario {
         this.porcentajeGanancia = porcentajeGanancia;
     }
 
-    // public List<CobradorPago> getPagos() {
-    //     return pagos;
-    // }
+    public List<CobradorPago> getPagos() {
+        return pagos;
+    }
 
-    // public void setPagos(List<CobradorPago> pagos) {
-    //     this.pagos = pagos;
-    // }
+    public void setPagos(List<CobradorPago> pagos) {
+        this.pagos = pagos;
+    }
+
+    public void agregarPago(CobradorPago pago) {
+        if (pago == null || pago.getPago().getId() <= 0) {
+            var mensaje = "El Pago no puede ser nulo o tener un ID invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        if (! pago.getCobrador().getCodigo().equalsIgnoreCase(codigo)) {
+            var mensaje = "El Cobrador del Pago no corresponde al Cobrador asignado";
+            throw new IllegalArgumentException(mensaje);
+        }
+        
+        var existe = pagos.stream().
+                anyMatch(p -> p != null
+                && p.getId() == pago.getId()
+                && p.getPago() != null
+                && p.getPago().getId() == pago.getPago().getId());
+
+        if (!existe) {
+            this.pagos.add(pago);
+        }
+        pago.sincronizarCobrador(this);
+    }
 
     @Override
     public String toString() {
-        return "Cobrador\n" +
-               "-----------------\n" +
-               "Número Identificación: " + numeroIdentificacion + "\n" +
-               "Tipo Identificación: " + tipoIdentificacion + "\n" +
-               "Fecha Expedición: " + fechaExpedicion + "\n" +
-               "Lugar Expedición: " + lugarExpedicion + "\n" +
-               "Género: " + genero + "\n" +
-               "Foto: " + foto + "\n" +
-               "Dirección: " + direccion + "\n" +
-               "Teléfono: " + telefono + "\n" +
-               "Vehículo: " + vehiculo + "\n" +
-               "Efectividad: " + efectividad + "\n" +
-               "Porcentaje Ganancia: " + porcentajeGanancia + "\n";
-               // + "Pagos asignados: " + (pagos != null ? pagos.size() : 0) + "\n";
+        return "Cobrador\n"
+                + "-----------------\n"
+                + "Número Identificación: " + numeroIdentificacion + "\n"
+                + "Tipo Identificación: " + tipoIdentificacion + "\n"
+                + "Fecha Expedición: " + fechaExpedicion + "\n"
+                + "Lugar Expedición: " + lugarExpedicion + "\n"
+                + "Género: " + genero + "\n"
+                + "Foto: " + foto + "\n"
+                + "Dirección: " + direccion + "\n"
+                + "Teléfono: " + telefono + "\n"
+                + "Vehículo: " + vehiculo + "\n"
+                + "Efectividad: " + efectividad + "\n"
+                + "Porcentaje Ganancia: " + porcentajeGanancia + "\n"
+                + "Pagos asignados: " + (pagos != null ? pagos.size() : 0) + "\n";
     }
 }

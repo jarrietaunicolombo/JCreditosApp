@@ -8,19 +8,32 @@ import java.time.LocalDateTime;
  */
 public class IntentoDeCobro {
 
+    private int id;
     private boolean exitoso;
     private LocalDateTime fechaIntento;
     private float valorPagado;
     private String observaciones;
 
-    // Relación comentada con CobradorPago
-    // private CobradorPago cobradorPago;
+    // Relaciones
+    private CobradorPago cobradorPago;
 
-    public IntentoDeCobro(float valorPagado /* , CobradorPago cobradorPago */) {
+    public IntentoDeCobro(float valorPagado, CobradorPago cobradorPago) {
+        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+            var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
         this.valorPagado = valorPagado;
         this.fechaIntento = LocalDateTime.now();
         this.exitoso = valorPagado > 0;
-        // this.cobradorPago = cobradorPago;
+        this.cobradorPago = cobradorPago;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isExitoso() {
@@ -56,22 +69,36 @@ public class IntentoDeCobro {
         this.observaciones = observaciones;
     }
 
-    // public CobradorPago getCobradorPago() {
-    //     return cobradorPago;
-    // }
+    public CobradorPago getCobradorPago() {
+        return cobradorPago;
+    }
 
-    // public void setCobradorPago(CobradorPago cobradorPago) {
-    //     this.cobradorPago = cobradorPago;
-    // }
+    public void setCobradorPago(CobradorPago cobradorPago) {
+        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+            var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        this.cobradorPago = cobradorPago;
+        cobradorPago.agregarIntentoDeCobro(this);
+    }
+    
+    void sincronizarCobradorPago(CobradorPago cobradorPago){
+        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+            var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
+            throw new IllegalArgumentException(mensaje);
+        }
+        this.cobradorPago = cobradorPago;
+ 
+    }
 
     @Override
     public String toString() {
-        return "IntentoCobro\n" +
-               "-----------------\n" +
-               "Exitoso: " + exitoso + "\n" +
-               "Fecha Intento: " + fechaIntento + "\n" +
-               "Valor Pagado: " + valorPagado + "\n" +
-               "Observaciones: " + observaciones + "\n";
-               // + "CobradorPago: " + (cobradorPago != null ? cobradorPago.getId() : "null") + "\n";
+        return "IntentoCobro\n"
+                + "-----------------\n"
+                + "Exitoso: " + exitoso + "\n"
+                + "Fecha Intento: " + fechaIntento + "\n"
+                + "Valor Pagado: " + valorPagado + "\n"
+                + "Observaciones: " + observaciones + "\n"
+                + "CobradorPago: " + (cobradorPago != null ? cobradorPago.getId() : "null") + "\n";
     }
 }
