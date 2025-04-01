@@ -13,8 +13,8 @@ public class Prestamista extends Usuario {
     // private List<Prestamo> prestamos;
     // private List<Inversion> inversiones;
 
-    public Prestamista(String codigo, String primerNombre, String primerApellido, String email) {
-        super(codigo, primerNombre, primerApellido, email);
+    public Prestamista(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
+        super(codigo, primerNombre, primerApellido, email, rol);
     }
 
     public double getCapital() {

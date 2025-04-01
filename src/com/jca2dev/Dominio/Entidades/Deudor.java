@@ -28,8 +28,8 @@ public class Deudor extends Usuario {
 
     // private List<Prestamo> prestamos;
 
-    public Deudor(String codigo, String primerNombre, String primerApellido, String email) {
-        super(codigo, primerNombre, primerApellido, email);
+    public Deudor(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
+        super(codigo, primerNombre, primerApellido, email, rol);
     }
 
     public String getNumeroIdentificacion() {

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
  *
  * @author John Carlos Arrieta Arrieta
  */
-
 public class Usuario {
 
     protected String codigo;
@@ -18,18 +17,37 @@ public class Usuario {
     protected String primerApellido;
     protected String segundoApellido;
     protected String email;
-    // private Rol rol;
+    protected Rol rol;
 
-    public Usuario(String codigo, String primerNombre, String primerApellido
-                    , String email /*, Rol rol */) {
+    public Usuario(String codigo, String primerNombre, String primerApellido, String email, Rol rol) 
+    {
+        if(rol == null || rol.getId() <=0 || rol.getNombre().trim().isEmpty())
+         {
+             var menesaje = "Al crear un usuario se requiere un rol valido";
+             throw new IllegalArgumentException(menesaje);
+         }
         this.codigo = codigo;
         this.primerNombre = primerNombre;
         this.primerApellido = primerApellido;
         this.email = email;
-        // this.rol = rol;
+        this.rol = rol;
         this.fechaCreacion = LocalDateTime.now();
         this.estado = "ACTIVO";
     }
+
+     // GET Y SET
+     public Rol getRol() {
+         return rol;
+     }
+
+     public void setRol(Rol rol) {
+         if(rol == null || rol.getId() <=0 || rol.getNombre().trim().isEmpty())
+         {
+             var menesaje = "Al crear un usuario se requiere un rol valido";
+             throw new IllegalArgumentException(menesaje);
+         }
+         this.rol = rol;
+     }
 
     public String getCodigo() {
         return codigo;
@@ -103,14 +121,7 @@ public class Usuario {
         this.email = email;
     }
 
-    // public Rol getRol() {
-    //     return rol;
-    // }
-
-    // public void setRol(Rol rol) {
-    //     this.rol = rol;
-    // }
-
+    
     @Override
     public String toString() {
         return "Usuario\n" +

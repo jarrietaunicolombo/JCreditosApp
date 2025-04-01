@@ -24,8 +24,8 @@ public class Cobrador extends Usuario {
     // Relaciones comentadas
     // private List<CobradorPago> pagos;
 
-    public Cobrador(String codigo, String primerNombre, String primerApellido, String email) {
-        super(codigo, primerNombre, primerApellido, email);
+    public Cobrador(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
+        super(codigo, primerNombre, primerApellido, email, rol);
     }
 
     public String getNumeroIdentificacion() {

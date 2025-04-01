@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class CoodeudorPrestamo {
+public class CodeudorPrestamo {
 
     private String relacionDeudor;
     private boolean activo;
     private LocalDateTime fechaAsignacion;
 
-    // private Coodeudor coodeudor;
+    // private Codeudor coodeudor;
     // private Prestamo prestamo;
 
-    public CoodeudorPrestamo(String relacionDeudor /*, Coodeudor coodeudor, Prestamo prestamo */) {
+    public CodeudorPrestamo(String relacionDeudor /*, Codeudor coodeudor, Prestamo prestamo */) {
         this.relacionDeudor = relacionDeudor;
         this.activo = true;
         this.fechaAsignacion = LocalDateTime.now();
@@ -47,11 +47,11 @@ public class CoodeudorPrestamo {
         this.fechaAsignacion = fechaAsignacion;
     }
 
-    // public Coodeudor getCoodeudor() {
+    // public Codeudor getCodeudor() {
     //     return coodeudor;
     // }
 
-    // public void setCoodeudor(Coodeudor coodeudor) {
+    // public void setCodeudor(Codeudor coodeudor) {
     //     this.coodeudor = coodeudor;
     // }
 
@@ -65,12 +65,12 @@ public class CoodeudorPrestamo {
 
     @Override
     public String toString() {
-        return "CoodeudorPrestamo\n" +
+        return "CodeudorPrestamo\n" +
                "-----------------\n" +
                "Relación con Deudor: " + relacionDeudor + "\n" +
                "Activo: " + activo + "\n" +
                "Fecha de Asignación: " + fechaAsignacion + "\n";
-               // + "Coodeudor: " + (coodeudor != null ? coodeudor.getCodigo() : "null") + "\n"
+               // + "Codeudor: " + (coodeudor != null ? coodeudor.getCodigo() : "null") + "\n"
                // + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n";
     }
 }

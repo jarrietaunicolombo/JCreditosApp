@@ -63,10 +63,10 @@ class Deudor {
   - prestamos ; List<Prestamo>
 }
 
-class Coodeudor {
+class Codeudor {
   - tieneViviendaPropia: boolean
   - tienevehiculo: boolean
-  - prestamos : List<CoodeudorPrestamo>
+  - prestamos : List<CodeudorPrestamo>
   
 }
 
@@ -110,7 +110,7 @@ class Prestamo {
   - observaciones: String
   - prestamista : Prestamista
   - deduor : Deudor
-  - coodeudores : List<CoodeudorPrestamo>
+  - coodeudores : List<CodeudorPrestamo>
   - inversiones : List<PrestamoInversion>
   - pagos : List<Pago>
 
@@ -138,24 +138,6 @@ class IntentoCobro {
   - cobradorPago : CobradorPago
 }
 
-' ===================
-' RELACIONES AL FINAL
-' ===================
-
-' HERENCIAS 
-
-Usuario <|--  Prestamista
-Usuario <|--  Deudor
-Deudor <|--  Coodeudor
-Usuario <|--  Cobrador
-
-' UNO A MUCHOS
-
-Rol "1" --  "0..*" Usuario : asignar
-Prestamista "1" --  "0.." Inversion : poseer 
-Prestamo "0..*" --  "1"  Prestamista : prestar
-Prestamo "0..*" --  "1" Deudor : otorgar
-Prestamo *--  Pago : generar
 
 ' ===========================
 ' CLASES ASOCIACIÓN (N:N)
@@ -176,13 +158,34 @@ class CobradorPago {
 
 }
 
-class CoodeudorPrestamo {
+class CodeudorPrestamo {
   - relacionDeudor: String
   - activo: boolean
   - fechaAsignacion: LocalDateTime
-  - coodeudor : Coodeudor;
+  - coodeudor : Codeudor;
   - prestamo : Prestamo;
 }
+
+
+' ===================
+' RELACIONES AL FINAL
+' ===================
+
+' HERENCIAS 
+
+Usuario <|--  Prestamista
+Usuario <|--  Deudor
+Deudor <|--  Codeudor
+Usuario <|--  Cobrador
+
+' UNO A MUCHOS
+
+Rol "1" --  "0..*" Usuario : asignar
+Prestamista "1" --  "0.." Inversion : poseer 
+Prestamo "0..*" --  "1"  Prestamista : prestar
+Prestamo "0..*" --  "1" Deudor : otorgar
+Prestamo *--  Pago : generar
+
 
 ' Relacion Clase asociación entre Prestamo y Inversion
 Prestamo "*" --  "1.." Inversion
@@ -192,9 +195,9 @@ Prestamo "*" --  "1.." Inversion
 Cobrador "1..*" --  "*" Pago
 (Cobrador, Pago) .. CobradorPago : gestionar
 
-' Relacion Clase asociación entre Coodeudor y Prestamo
-Prestamo "*" --  "1..*" Coodeudor
-(Prestamo, Coodeudor) .. CoodeudorPrestamo : respaldar
+' Relacion Clase asociación entre Codeudor y Prestamo
+Prestamo "*" --  "1..*" Codeudor
+(Prestamo, Codeudor) .. CodeudorPrestamo : respaldar
 
 ' Relación de IntentoCobro con Cobrador y Pago
 IntentoCobro "0..*" --  "1" CobradorPago : realizadoPor

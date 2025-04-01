@@ -6,15 +6,16 @@ package com.jca2dev.Dominio.Entidades;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Coodeudor extends Deudor {
+public class Codeudor extends Deudor {
 
     private boolean tieneViviendaPropia;
     private boolean tieneVehiculo;
 
-    // private List<CoodeudorPrestamo> prestamos;
+    // private List<CodeudorPrestamo> prestamos;
 
-    public Coodeudor(String codigo, String primerNombre, String primerApellido, String email) {
-        super(codigo, primerNombre, primerApellido, email);
+    public Codeudor(String codigo, String primerNombre, String primerApellido
+            , String email, Rol rol) {
+        super(codigo, primerNombre, primerApellido, email, rol);
     }
 
     public boolean isTieneViviendaPropia() {
@@ -33,17 +34,17 @@ public class Coodeudor extends Deudor {
         this.tieneVehiculo = tieneVehiculo;
     }
 
-    // public List<CoodeudorPrestamo> getPrestamos() {
+    // public List<CodeudorPrestamo> getPrestamos() {
     //     return prestamos;
     // }
 
-    // public void setPrestamos(List<CoodeudorPrestamo> prestamos) {
+    // public void setPrestamos(List<CodeudorPrestamo> prestamos) {
     //     this.prestamos = prestamos;
     // }
 
     @Override
     public String toString() {
-        return "Coodeudor\n" +
+        return "Codeudor\n" +
                "-----------------\n" +
                "Tiene Vivienda Propia: " + tieneViviendaPropia + "\n" +
                "Tiene Vehículo Propio: " + tieneVehiculo + "\n" +

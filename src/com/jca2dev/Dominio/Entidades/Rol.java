@@ -1,17 +1,17 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+ import java.util.List;
 
 public class Rol {
 
-    private String id;
+    private int id;
     private String nombre;
     private String descripcion;
     private String icono;
     private String estado;
-    private LocalDateTime fechaCreacion;
-    // private List<Usuario> usuarios;
+    private LocalDateTime fechaCreacion; 
+    private List<Usuario> usuarios;
 
     public Rol(String nombre) {
         this.nombre = nombre;
@@ -19,11 +19,22 @@ public class Rol {
         this.estado = "ACTIVO";
     }
 
-    public String getId() {
+    // GET y SET
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+    
+    
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
