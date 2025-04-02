@@ -1,7 +1,9 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.GeneroEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ public class Cobrador extends Usuario {
     private TipoDeIdentificacionEnum tipoIdentificacion;
     private LocalDateTime fechaExpedicion;
     private String lugarExpedicion;
-    private String genero;
+    private GeneroEnum genero;
     private String foto;
     private String direccion;
     private String telefono;
@@ -28,6 +30,7 @@ public class Cobrador extends Usuario {
     // Constructor
     public Cobrador(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+        pagos = new ArrayList<>();
     }
 
     // Gets y Sets
@@ -63,11 +66,11 @@ public class Cobrador extends Usuario {
         this.lugarExpedicion = lugarExpedicion;
     }
 
-    public String getGenero() {
+    public GeneroEnum getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(GeneroEnum genero) {
         this.genero = genero;
     }
 

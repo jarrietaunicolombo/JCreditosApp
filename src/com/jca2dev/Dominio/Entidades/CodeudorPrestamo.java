@@ -20,7 +20,7 @@ public class CodeudorPrestamo {
     private Prestamo prestamo;
 
     // Constructores
-    public CodeudorPrestamo(String relacionDeudor, Codeudor coodeudor, Prestamo prestamo) {
+    public CodeudorPrestamo(String relacionDeudor, Codeudor codeudor, Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener ID invalido.";
             throw new IllegalArgumentException(mensaje);
@@ -34,7 +34,7 @@ public class CodeudorPrestamo {
         this.relacionDeudor = relacionDeudor;
         this.activo = true;
         this.fechaAsignacion = LocalDateTime.now();
-        this.codeudor = coodeudor;
+        this.codeudor = codeudor;
         this.prestamo = prestamo;
     }
 

@@ -3,6 +3,7 @@ package com.jca2dev.Dominio.Entidades;
 import com.jca2dev.Dominio.Constantes.GeneroEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class Deudor extends Usuario {
     // Constructores
     public Deudor(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+        prestamos = new ArrayList<>();
     }
 
     //    Gets y Sets
@@ -181,7 +183,7 @@ public class Deudor extends Usuario {
             throw new IllegalArgumentException(mensaje);
         }
         
-         if ( prestamo.getDeudor().getCodigo().equalsIgnoreCase(codigo)) {
+         if (! prestamo.getDeudor().getCodigo().equalsIgnoreCase(codigo)) {
             var mensaje = "El Deudor del Prestamo no corresponde al Deudor asignado";
             throw new IllegalArgumentException(mensaje);
         }

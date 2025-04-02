@@ -2,6 +2,7 @@ package com.jca2dev.Dominio.Entidades;
 
 import com.jca2dev.Dominio.Constantes.EstadoDePagoEnum;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,7 @@ public class Pago {
         this.saldo = monto;
         this.fechaCobro = LocalDateTime.now();
         this.prestamo = prestamo;
+        cobradores = new ArrayList<>();
     }
 
     // Sets y Gets
@@ -146,7 +148,7 @@ public class Pago {
         this.cobradores = cobradores;
     }
 
-    void agregarCobrador(CobradorPago cobrador) {
+    public void agregarCobrador(CobradorPago cobrador) {
         if (cobrador == null || cobrador.getId() <= 0
                 || cobrador.getCobrador().getCodigo().trim().isEmpty()) {
             var mensaje = "El Cobrador no puede ser null, no tener Id invalido";

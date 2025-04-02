@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class Codeudor extends Deudor {
     public Codeudor(String codigo, String primerNombre, String primerApellido,
             String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+        prestamos = new ArrayList<>();
     }
 
     //    Gets y Sets

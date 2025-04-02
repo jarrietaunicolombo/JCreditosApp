@@ -1,6 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class CobradorPago {
         this.fechaAsignacion = LocalDateTime.now();
         this.cobrador = cobrador;
         this.pago = pago;
+        intentosCobros = new ArrayList<>();
     }
 
     // Gets y Sets

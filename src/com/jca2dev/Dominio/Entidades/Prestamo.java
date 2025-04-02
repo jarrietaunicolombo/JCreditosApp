@@ -3,6 +3,7 @@ package com.jca2dev.Dominio.Entidades;
 import com.jca2dev.Dominio.Constantes.EstadoDePrestamoEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeCuotaEnum;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,9 @@ public class Prestamo {
         this.saldo = monto;
         this.prestamista = prestamista;
         this.deudor = deudor;
+        codeudores = new ArrayList<>();
+        inversiones = new ArrayList<>();
+        pagos = new ArrayList<>();
     }
 
     // Gets y Sets
@@ -209,7 +213,7 @@ public class Prestamo {
         codeudorPrestamo.sincronizarPrestamo(this);
     }
 
-    void agreInversion(PrestamoInversion prestamoInverson) {
+    public void agregarInversion(PrestamoInversion prestamoInverson) {
         if (prestamoInverson == null || prestamoInverson.getId() <= 0
                 || prestamoInverson.getInversion().getId() <= 0) {
             var mensaje = "La inversion no puede ser nulo ni tener un In invalido.";
@@ -238,7 +242,7 @@ public class Prestamo {
         prestamoInverson.sincronizarPrestamo(this);
     }
 
-    void agregarPago(Pago pago) {
+    public void agregarPago(Pago pago) {
         if (pago == null || pago.getId() <= 0) {
             var mensaje = "El Pago no puede ser nulo ni tener un Id invalido.";
             throw new IllegalArgumentException(mensaje);
