@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.EstadoDeRolEnum;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Rol {
     private String nombre;
     private String descripcion;
     private String icono;
-    private String estado;
+    private EstadoDeRolEnum estado;
     
     //     Relaciones
     private LocalDateTime fechaCreacion;
@@ -21,7 +22,14 @@ public class Rol {
     public Rol(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
-        this.estado = "ACTIVO";
+        this.estado = EstadoDeRolEnum.ACTIVO;
+        usuarios = new ArrayList<>();
+    }
+    public Rol(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+        this.fechaCreacion = LocalDateTime.now();
+        this.estado = EstadoDeRolEnum.ACTIVO;
         usuarios = new ArrayList<>();
     }
 
@@ -58,11 +66,11 @@ public class Rol {
         this.icono = icono;
     }
 
-    public String getEstado() {
+    public EstadoDeRolEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoDeRolEnum estado) {
         this.estado = estado;
     }
 
