@@ -1,6 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class Inversion {
         this.fechaCreacion = LocalDateTime.now();
         this.saldo = monto;
         this.prestamista = prestamista;
+        prestamos = new ArrayList<>();
     }
 
     // Gets y Sets

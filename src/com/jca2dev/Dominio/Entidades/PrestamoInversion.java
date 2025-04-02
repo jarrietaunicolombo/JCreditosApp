@@ -73,7 +73,7 @@ public class PrestamoInversion {
             throw new IllegalArgumentException(mensaje);
         }
         this.prestamo = prestamo;
-        prestamo.agreInversion(this);
+        prestamo.agregarInversion(this);
     }
 
     void sincronizarInversion(Inversion inversion) {

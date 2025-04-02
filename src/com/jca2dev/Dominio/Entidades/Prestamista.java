@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ public class Prestamista extends Usuario {
     // Constructor
     public Prestamista(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
         super(codigo, primerNombre, primerApellido, email, rol);
+        prestamos = new ArrayList<>();
+        inversiones = new ArrayList<>();
     }
 
     // Gets y Sets
@@ -48,7 +51,7 @@ public class Prestamista extends Usuario {
     
     // Metodos para garantizar las restrcciones de las relaciones
     
-    void agregarInversion(Inversion inversion) {
+    public void agregarInversion(Inversion inversion) {
         if (inversion == null || inversion.getId() <= 0
                 || inversion.getMonto() <= 0) {
             var mensaje = "La Inversion no puede ser nula no tener monto invalido" ;
@@ -71,7 +74,7 @@ public class Prestamista extends Usuario {
     }
 
 
-    void agregarPrestamo(Prestamo prestamo) {
+    public void agregarPrestamo(Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0
                 || prestamo.getMonto() <= 0) {
             var mensaje = "El Prestamo no puede ser nula no tener monto invalido" ;

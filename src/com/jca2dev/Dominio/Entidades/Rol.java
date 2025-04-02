@@ -1,6 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rol {
@@ -21,6 +22,7 @@ public class Rol {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
         this.estado = "ACTIVO";
+        usuarios = new ArrayList<>();
     }
 
     //    Gets y Sets
