@@ -1,13 +1,15 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class CodeudorPrestamo {
+public class CodeudorPrestamo  implements Serializable{
 
     private Integer id;
     private String relacionDeudor;
@@ -16,6 +18,8 @@ public class CodeudorPrestamo {
 
     private Codeudor codeudor;
     private Prestamo prestamo;
+    // Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
 
     public CodeudorPrestamo(String relacionDeudor, Codeudor codeudor, Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
@@ -27,7 +31,7 @@ public class CodeudorPrestamo {
             var mensaje = "El codeudor no puede ser nulo ni tener Codigo vacío.";
             throw new IllegalArgumentException(mensaje);
         }
-
+        this.id = incrementoDeId.getAndIncrement();
         this.relacionDeudor = relacionDeudor;
         this.activo = true;
         this.fechaAsignacion = LocalDateTime.now();
@@ -111,8 +115,12 @@ public class CodeudorPrestamo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         CodeudorPrestamo that = (CodeudorPrestamo) o;
 
@@ -134,5 +142,9 @@ public class CodeudorPrestamo {
                 + "Fecha de Asignación: " + fechaAsignacion + "\n"
                 + "Codeudor: " + (codeudor != null ? codeudor.getCodigo() : "null") + "\n"
                 + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }

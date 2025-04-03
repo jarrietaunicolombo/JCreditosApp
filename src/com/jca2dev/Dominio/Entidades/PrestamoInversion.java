@@ -1,10 +1,13 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class PrestamoInversion {
+public class PrestamoInversion  implements Serializable{
 
     // Propiedades de instancia u objeto
     private Integer id;
@@ -13,6 +16,8 @@ public class PrestamoInversion {
     //     Relaciones 
     private Inversion inversion;
     private Prestamo prestamo;
+// Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
 
     // Constructores
     public PrestamoInversion(double montoUtilizado, Inversion inversion, Prestamo prestamo) {
@@ -25,7 +30,7 @@ public class PrestamoInversion {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
-
+        this.id = incrementoDeId.getAndIncrement();
         this.montoUtilizado = montoUtilizado;
         this.inversion = inversion;
         this.prestamo = prestamo;
@@ -56,8 +61,7 @@ public class PrestamoInversion {
         return prestamo;
     }
 
-   // Metodos para garantizar las restrcciones de las relaciones 
-    
+    // Metodos para garantizar las restrcciones de las relaciones 
     public void setInversion(Inversion inversion) {
         if (inversion == null || inversion.getId() == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
@@ -99,6 +103,10 @@ public class PrestamoInversion {
                 + "Monto Utilizado: " + montoUtilizado + "\n"
                 + "Inversion ID: " + (inversion != null ? inversion.getId() : "null") + "\n"
                 + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 
 }

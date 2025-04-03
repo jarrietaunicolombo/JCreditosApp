@@ -1,13 +1,14 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class IntentoDeCobro {
+public class IntentoDeCobro  implements Serializable{
 
     // propidades de instancia u objeto
     private Integer id;
@@ -19,12 +20,16 @@ public class IntentoDeCobro {
     // Relaciones
     private CobradorPago cobradorPago;
 
+    // Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
+
     // Constructores 
     public IntentoDeCobro(float valorPagado, CobradorPago cobradorPago) {
         if (cobradorPago == null || cobradorPago.getId() == null || cobradorPago.getId() <= 0) {
             var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
+        this.id = incrementoDeId.getAndIncrement();
         this.valorPagado = valorPagado;
         this.fechaIntento = LocalDateTime.now();
         this.exitoso = valorPagado > 0;
@@ -104,5 +109,9 @@ public class IntentoDeCobro {
                 + "Valor Pagado: " + valorPagado + "\n"
                 + "Observaciones: " + observaciones + "\n"
                 + "CobradorPago: " + (cobradorPago != null ? cobradorPago.getId() : "null") + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }

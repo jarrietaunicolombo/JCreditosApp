@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +8,11 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Prestamista extends Usuario {
+public class Prestamista extends Usuario  implements Serializable{
 
-     // propidades de instancia u objeto
+    // propidades de instancia u objeto
     private double capital;
-    
+
     // Propiedades de Relaciones 
     private List<Prestamo> prestamos;
     private List<Inversion> inversiones;
@@ -48,50 +49,44 @@ public class Prestamista extends Usuario {
         this.inversiones = inversiones;
     }
 
-    
     // Metodos para garantizar las restrcciones de las relaciones
-    
     public void agregarInversion(Inversion inversion) {
         if (inversion == null || inversion.getId() <= 0
                 || inversion.getMonto() <= 0) {
-            var mensaje = "La Inversion no puede ser nula no tener monto invalido" ;
+            var mensaje = "La Inversion no puede ser nula no tener monto invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-        if (!inversion.getPrestamista().getCodigo().equalsIgnoreCase(this.codigo))
-        {
-            var mensaje = "El Prestamista de la Inversion no corresponde al Prestamisga asingando" ;
+
+        if (!inversion.getPrestamista().getCodigo().equalsIgnoreCase(this.codigo)) {
+            var mensaje = "El Prestamista de la Inversion no corresponde al Prestamisga asingando";
             throw new IllegalArgumentException(mensaje);
         }
-        
+
         var existe = this.inversiones.stream()
                 .anyMatch(i -> i.getId() == inversion.getId());
-        
+
         if (!existe) {
             this.inversiones.add(inversion);
         }
         inversion.sincronizarPrestamista(this);
     }
 
-
     public void agregarPrestamo(Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() <= 0
                 || prestamo.getMonto() <= 0) {
-            var mensaje = "El Prestamo no puede ser nula no tener monto invalido" ;
+            var mensaje = "El Prestamo no puede ser nula no tener monto invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-         if (! prestamo.getPrestamista().getCodigo().equalsIgnoreCase(this.codigo))
-         {
-            var mensaje = "El Prestamo al prestamista asignado" ;
+
+        if (!prestamo.getPrestamista().getCodigo().equalsIgnoreCase(this.codigo)) {
+            var mensaje = "El Prestamo al prestamista asignado";
             throw new IllegalArgumentException(mensaje);
         }
-         
-         
+
         var existe = this.prestamos.stream()
-                .anyMatch(p -> p != null &&
-                p.getId() == prestamo.getId());
-        
+                .anyMatch(p -> p != null
+                && p.getId() == prestamo.getId());
+
         if (!existe) {
             this.prestamos.add(prestamo);
         }

@@ -1,14 +1,16 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Inversion {
+public class Inversion  implements Serializable{
 
     // propidades de instancia u objeto
     private Integer id;
@@ -22,14 +24,16 @@ public class Inversion {
     //     Relaciones 
     private Prestamista prestamista;
     private List<PrestamoInversion> prestamos;
-
+// Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
+    
     // Constructores
-    public Inversion(int id, String nombre, double monto, Prestamista prestamista) {
+    public Inversion(String nombre, double monto, Prestamista prestamista) {
         if (prestamista == null || prestamista.getCodigo().trim().isEmpty()) {
             var mensaje = "El Prestamista no puede ser nulo o tener un Codigo invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        this.id = id;
+        this.id = incrementoDeId.getAndIncrement();
         this.nombre = nombre;
         this.monto = monto;
         this.fechaCreacion = LocalDateTime.now();
@@ -100,7 +104,6 @@ public class Inversion {
     }
 
     // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void setPrestamista(Prestamista prestamista) {
         if (prestamista == null) {
             throw new IllegalArgumentException("Prestamista no puede ser nulo");
@@ -162,5 +165,9 @@ public class Inversion {
                 + "Fecha de Creación: " + fechaCreacion + "\n"
                 + "Prestamista: " + (prestamista != null ? prestamista.getCodigo() : "null") + "\n"
                 + "Cantidad de préstamos: " + (prestamos != null ? prestamos.size() : 0) + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }

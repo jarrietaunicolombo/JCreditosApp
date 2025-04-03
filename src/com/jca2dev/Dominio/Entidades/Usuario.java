@@ -1,12 +1,13 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Usuario {
+public class Usuario  implements Serializable{
 
     // Propiedades de instancia u objeto
     protected String codigo;

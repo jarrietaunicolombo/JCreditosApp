@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Codeudor extends Deudor {
+public class Codeudor extends Deudor  implements Serializable{
 
     // propidades de instancia u objeto
     private boolean tieneViviendaPropia;
@@ -49,7 +50,6 @@ public class Codeudor extends Deudor {
     }
 
     // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void agregarCodeudorPrestamo(CodeudorPrestamo codeudorPrestamo) {
         if (codeudorPrestamo == null || codeudorPrestamo.getId() <= 0
                 || codeudorPrestamo.getPrestamo().getId() <= 0) {
@@ -63,9 +63,9 @@ public class Codeudor extends Deudor {
         }
 
         var existe = this.prestamos.stream()
-                .anyMatch(p -> p != null && 
-                p.getId() == codeudorPrestamo.getId() &&
-                p.getPrestamo().getId() == codeudorPrestamo.getPrestamo().getId());
+                .anyMatch(p -> p != null
+                && p.getId() == codeudorPrestamo.getId()
+                && p.getPrestamo().getId() == codeudorPrestamo.getPrestamo().getId());
 
         if (!existe) {
             this.prestamos.add(codeudorPrestamo);

@@ -1,11 +1,13 @@
 package com.jca2dev.Dominio.Entidades;
 
 import com.jca2dev.Dominio.Constantes.EstadoDeRolEnum;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Rol {
+public class Rol  implements Serializable{
 
     // Propiedades de instancia u objeto
     private Integer id;
@@ -13,20 +15,16 @@ public class Rol {
     private String descripcion;
     private String icono;
     private EstadoDeRolEnum estado;
-    
+
     //     Relaciones
     private LocalDateTime fechaCreacion;
     private List<Usuario> usuarios;
+// Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
 
     // Constructores
     public Rol(String nombre) {
-        this.nombre = nombre;
-        this.fechaCreacion = LocalDateTime.now();
-        this.estado = EstadoDeRolEnum.ACTIVO;
-        usuarios = new ArrayList<>();
-    }
-    public Rol(int id, String nombre) {
-        this.id = id;
+        this.id = incrementoDeId.getAndIncrement();
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
         this.estado = EstadoDeRolEnum.ACTIVO;
@@ -91,25 +89,24 @@ public class Rol {
     }
 
     // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void agregarUsuario(Usuario usuario) {
         if (usuario == null || usuario.getCodigo() == null || usuario.getCodigo()
                 .trim().isEmpty()) {
             var mensaje = "El Usuario no puede ser nulo ni tener codigo invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-        if (usuario.getRol() == null || usuario.getRol().getId() == null || !usuario.getRol().getId().equals(this.id)) {
+
+        if (usuario.getRol().getId() != this.id) {
             var mensaje = "El Usuario no puede al Rol asignado";
             throw new IllegalArgumentException(mensaje);
         }
-        
+
         var existe = this.usuarios.stream()
                 .anyMatch(u -> u.getCodigo().equals(usuario.getCodigo()));
-        if(!existe){
+        if (!existe) {
             this.usuarios.add(usuario);
         }
-        
+
         usuario.sincronizarRol(this);
     }
 
@@ -124,5 +121,9 @@ public class Rol {
                 + "Estado: " + estado + "\n"
                 + "Fecha de creación: " + fechaCreacion + "\n"
                 + "Usuarios: " + usuarios.size() + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }

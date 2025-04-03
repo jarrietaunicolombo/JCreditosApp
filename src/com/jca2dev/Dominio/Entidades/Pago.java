@@ -1,16 +1,18 @@
 package com.jca2dev.Dominio.Entidades;
 
 import com.jca2dev.Dominio.Constantes.EstadoDePagoEnum;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Pago {
+public class Pago  implements Serializable{
 
     private Integer id;
     private LocalDateTime fechaCobro;
@@ -24,13 +26,15 @@ public class Pago {
 
     private Prestamo prestamo;
     private List<CobradorPago> cobradores;
+    // Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
 
-    public Pago(Integer id, int numeroCuota, double monto, Prestamo prestamo) {
+    public Pago(int numeroCuota, double monto, Prestamo prestamo) {
         if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        this.id = id;
+        this.id = incrementoDeId.getAndIncrement();
         this.numeroCuota = numeroCuota;
         this.monto = monto;
         this.valorPagado = 0;
@@ -160,8 +164,8 @@ public class Pago {
         }
 
         var existe = this.cobradores.stream()
-                .anyMatch(c -> c != null &&
-                        c.getCobrador().getCodigo().equalsIgnoreCase(cobrador.getCobrador().getCodigo()));
+                .anyMatch(c -> c != null
+                && c.getCobrador().getCodigo().equalsIgnoreCase(cobrador.getCobrador().getCodigo()));
 
         if (!existe) {
             this.cobradores.add(cobrador);
@@ -183,5 +187,9 @@ public class Pago {
                 + "Observaciones: " + observaciones + "\n"
                 + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n"
                 + "Cobradores asignados: " + (cobradores != null ? cobradores.size() : 0) + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }

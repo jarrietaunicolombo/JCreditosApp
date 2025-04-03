@@ -2,6 +2,7 @@ package com.jca2dev.Dominio.Entidades;
 
 import com.jca2dev.Dominio.Constantes.GeneroEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Cobrador extends Usuario {
+public class Cobrador extends Usuario implements Serializable{
 
     private String numeroIdentificacion;
     private TipoDeIdentificacionEnum tipoIdentificacion;
@@ -131,18 +132,17 @@ public class Cobrador extends Usuario {
     }
 
     // Metodos para garantizar las restrcciones de las relaciones
-    
     public void agregarPago(CobradorPago pago) {
         if (pago == null || pago.getPago().getId() <= 0) {
             var mensaje = "El Pago no puede ser nulo o tener un ID invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-        if (! pago.getCobrador().getCodigo().equalsIgnoreCase(codigo)) {
+
+        if (!pago.getCobrador().getCodigo().equalsIgnoreCase(codigo)) {
             var mensaje = "El Cobrador del Pago no corresponde al Cobrador asignado";
             throw new IllegalArgumentException(mensaje);
         }
-        
+
         var existe = pagos.stream().
                 anyMatch(p -> p != null
                 && p.getId() == pago.getId()
@@ -172,4 +172,6 @@ public class Cobrador extends Usuario {
                 + "Porcentaje Ganancia: " + porcentajeGanancia + "\n"
                 + "Pagos asignados: " + (pagos != null ? pagos.size() : 0) + "\n";
     }
+    
+   
 }

@@ -129,7 +129,7 @@ public class Principal {
         rolCobrador.agregarUsuario(cobrador);
 
         // Crear una inversión asociada al prestamista
-        Inversion inversion = new Inversion(1, "Inversión Inicial", 500000, prestamista);
+        Inversion inversion = new Inversion( "Inversión Inicial", 500000, prestamista);
         // Propiedades adicionales
         inversion.setProcedencia("Ahorros personales");
         inversion.setSaldo(500000);  // Inicialmente igual al monto
@@ -140,7 +140,6 @@ public class Principal {
 
         // Crear préstamo asociado al prestamista y al deudor
         Prestamo prestamo = new Prestamo(
-                1,
                 300000,
                 0.10,
                 10,
@@ -158,7 +157,7 @@ public class Principal {
         deudor.agregarPrestamo(prestamo);
 
         // Crear pago asociado al préstamo
-        Pago pago = new Pago(1, 1, 33000, prestamo);
+        Pago pago = new Pago( 1, 33000, prestamo);
         // Propiedades adicionales
         pago.setFechaCobro(LocalDateTime.of(2024, 2, 1, 8, 0));
         pago.setFechaPago(LocalDateTime.of(2024, 2, 1, 13, 15));
@@ -207,6 +206,7 @@ public class Principal {
          */
         System.out.println("========= PRESTAMISTA =========");
         System.out.println(prestamista);
+        System.out.println("Rol: "+prestamista.getRol());
 
         // Inversiones
         System.out.println("\\n--- Inversiones ---");
@@ -244,6 +244,7 @@ public class Principal {
                 System.out.println("    Cobradores:");
                 for (CobradorPago cpago : p.getCobradores()) {
                     System.out.println("      " + cpago.getCobrador());
+                    System.out.println("      ROL: " + cpago.getCobrador().getRol());
 
                     // Intentos de Cobro
                     System.out.println("      Intentos:");

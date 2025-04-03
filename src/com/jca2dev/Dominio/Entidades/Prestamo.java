@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -29,10 +30,12 @@ public class Prestamo {
     private List<CodeudorPrestamo> codeudores;
     private List<PrestamoInversion> inversiones;
     private List<Pago> pagos;
+    // Propiedades de la clase, su valor es el mismo para todos los objetos
+    private static AtomicInteger incrementoDeId = new AtomicInteger(1);
 
-    public Prestamo(Integer id, double monto, double tasaInteres, int numeroCuotas,
-                    TipoDeCuotaEnum tipoDeCuota, Prestamista prestamista, Deudor deudor) {
-        this.id = id;
+    public Prestamo(double monto, double tasaInteres, int numeroCuotas,
+            TipoDeCuotaEnum tipoDeCuota, Prestamista prestamista, Deudor deudor) {
+       this.id = incrementoDeId.getAndIncrement();
         this.monto = monto;
         this.tasaInteres = tasaInteres;
         this.numeroCuotas = numeroCuotas;
@@ -191,8 +194,8 @@ public class Prestamo {
 
         var existe = this.codeudores.stream()
                 .anyMatch(c -> c != null
-                        && Objects.equals(c.getId(), codeudorPrestamo.getId())
-                        && c.getCodeudor().getCodigo()
+                && Objects.equals(c.getId(), codeudorPrestamo.getId())
+                && c.getCodeudor().getCodigo()
                         .equalsIgnoreCase(codeudorPrestamo.getCodeudor().getCodigo()));
 
         if (!existe) {
@@ -218,8 +221,8 @@ public class Prestamo {
         }
 
         var existe = this.inversiones.stream()
-                .anyMatch(i -> i != null &&
-                        Objects.equals(i.getId(), prestamoInverson.getId()));
+                .anyMatch(i -> i != null
+                && Objects.equals(i.getId(), prestamoInverson.getId()));
 
         if (!existe) {
             this.inversiones.add(prestamoInverson);
@@ -284,5 +287,9 @@ public class Prestamo {
                 + "Codeudores: " + (codeudores != null ? codeudores.size() : 0) + "\n"
                 + "Inversiones usadas: " + (inversiones != null ? inversiones.size() : 0) + "\n"
                 + "Pagos generados: " + (pagos != null ? pagos.size() : 0) + "\n";
+    }
+    
+     public static void calibrarIncrementoDeId(int nexId){
+        incrementoDeId.set(nexId);
     }
 }
