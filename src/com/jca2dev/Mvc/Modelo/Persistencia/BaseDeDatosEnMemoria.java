@@ -1,6 +1,7 @@
 package com.jca2dev.Mvc.Modelo.Persistencia;
 
 import com.jca2dev.Dominio.Entidades.*;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -9,6 +10,10 @@ import java.util.*;
  */
 public class BaseDeDatosEnMemoria {
 
+    // Carpeta donde se guarda el archivo
+    private static final String NOMBRE_CARPETA = "JCreditosAppBd";
+    // Nombre del archivo de persistencia
+    private static final String NOMBRE_ARCHIVO = "JCreditosAppBd.dat";
     // Coleccion para simular las tablas de una BD relacional
     private static final List<Rol> rolesEnBd = new ArrayList<>();
     private static final List<Usuario> usuariosEnBd = new ArrayList<>();
@@ -28,18 +33,22 @@ public class BaseDeDatosEnMemoria {
      * Simula la conexion a una Base de datos
      */
     public static void iniciar() {
-        // Aquí colocaremos el codigo para cargar los objetos desde archivos
         System.out.println("Cargando los datos desde la BD....");
-        insertarRolesPorIniciales();
+        List<Rol> rolesRecuperados = recuperarDatos();
+        if (rolesRecuperados.isEmpty()) {
+            insertarRolesPorIniciales();
+            guardarDatos(rolesEnBd);
+        } else {
+            rolesEnBd.addAll(rolesRecuperados);
+        }
     }
 
     /**
-     * Simula el guardado fisico (de memora a archivos) de los datos en la BD
+     * Simula el guardado fisico (de memoria a archivos) de los datos en la BD
      */
     public static void persistir() {
-        // Aqui colocaremos el codigo para guardar los objetos en archivo
         System.out.println("Guardando los datos en la BD....");
-
+        guardarDatos(rolesEnBd);
     }
 
     // Gets
@@ -48,47 +57,115 @@ public class BaseDeDatosEnMemoria {
     }
 
     public static List<Usuario> getUsuariosEnBd() {
-        return usuariosEnBd;
+        List<Usuario> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            lista.addAll(rol.getUsuarios());
+        }
+        return lista;
     }
 
     public static List<Prestamista> getPrestamistasEnBd() {
-        return prestamistasEnBd;
+        List<Prestamista> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            for (Usuario u : rol.getUsuarios()) {
+                if (u instanceof Prestamista p) {
+                    lista.add(p);
+                }
+            }
+        }
+        return lista;
     }
 
     public static List<Deudor> getDeudoresEnBd() {
-        return deudoresEnBd;
+        List<Deudor> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            for (Usuario u : rol.getUsuarios()) {
+                if (u instanceof Deudor d) {
+                    lista.add(d);
+                }
+            }
+        }
+        return lista;
     }
 
     public static List<Codeudor> getCodeudoresEnBd() {
-        return codeudoresEnBd;
+        List<Codeudor> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            for (Usuario u : rol.getUsuarios()) {
+                if (u instanceof Codeudor c) {
+                    lista.add(c);
+                }
+            }
+        }
+        return lista;
     }
 
     public static List<Cobrador> getCobradoresEnBd() {
-        return cobradoresEnBd;
+        List<Cobrador> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            for (Usuario u : rol.getUsuarios()) {
+                if (u instanceof Cobrador c) {
+                    lista.add(c);
+                }
+            }
+        }
+        return lista;
     }
 
     public static List<Inversion> getInversionesEnBd() {
-        return inversionesEnBd;
+        List<Inversion> lista = new ArrayList<>();
+        for (Prestamista p : getPrestamistasEnBd()) {
+            lista.addAll(p.getInversiones());
+        }
+        return lista;
     }
 
     public static List<Pago> getPagosEnBd() {
-        return pagosEnBd;
+        List<Pago> lista = new ArrayList<>();
+        for (Prestamista p : getPrestamistasEnBd()) {
+            for (Prestamo prestamo : p.getPrestamos()) {
+                lista.addAll(prestamo.getPagos());
+            }
+        }
+        return lista;
     }
 
     public static List<IntentoDeCobro> getIntentosDeCobrosEnBd() {
-        return intentosDeCobrosEnBd;
+        List<IntentoDeCobro> lista = new ArrayList<>();
+        for (Pago pago : getPagosEnBd()) {
+            for (CobradorPago cp : pago.getCobradores()) {
+                lista.addAll(cp.getIntentoCobro());
+            }
+        }
+        return lista;
     }
 
     public static List<CodeudorPrestamo> getCodeudoresPestamosEnBd() {
-        return codeudoresPestamosEnBd;
+        List<CodeudorPrestamo> lista = new ArrayList<>();
+        for (Prestamista p : getPrestamistasEnBd()) {
+            for (Prestamo prestamo : p.getPrestamos()) {
+                lista.addAll(prestamo.getCodeudores());
+            }
+        }
+        return lista;
     }
 
     public static List<CobradorPago> getCobradoresPagosEnBd() {
-        return cobradoresPagosEnBd;
+        List<CobradorPago> lista = new ArrayList<>();
+        for (Pago pago : getPagosEnBd()) {
+            lista.addAll(pago.getCobradores());
+        }
+        return lista;
     }
 
     public static List<PrestamoInversion> getPrestamosInversionesEnBd() {
-        return prestamosInversionesEnBd;
+        List<PrestamoInversion> lista = new ArrayList<>();
+        for (Prestamista p : getPrestamistasEnBd()) {
+            for (Prestamo prestamo : p.getPrestamos()) {
+                lista.addAll(prestamo.getInversiones());
+            }
+        }
+        return lista;
     }
 
     /**
@@ -96,12 +173,12 @@ public class BaseDeDatosEnMemoria {
      */
     private static void insertarRolesPorIniciales() {
         rolesEnBd.clear();
-        rolesEnBd.add(new Rol(1, "Admin"));
-        rolesEnBd.add(new Rol(2, "Prestamista"));
-        rolesEnBd.add(new Rol(3, "Deudor"));
-        rolesEnBd.add(new Rol(4, "Codeudor"));
-        rolesEnBd.add(new Rol(5, "Cobrador"));
-        rolesEnBd.add(new Rol(6, "Usuario"));
+        rolesEnBd.add(new Rol("Admin"));
+        rolesEnBd.add(new Rol("Prestamista"));
+        rolesEnBd.add(new Rol("Deudor"));
+        rolesEnBd.add(new Rol("Codeudor"));
+        rolesEnBd.add(new Rol("Cobrador"));
+        rolesEnBd.add(new Rol("Usuario"));
     }
 
     /**
@@ -122,8 +199,46 @@ public class BaseDeDatosEnMemoria {
         codeudoresPestamosEnBd.clear();
         cobradoresPagosEnBd.clear();
         prestamosInversionesEnBd.clear();
-        prestamosEnBd.clear(); 
+        prestamosEnBd.clear();
         System.out.println("Base de datos en memoria reiniciada correctamente.");
+    }
+
+    public static void guardarDatos(List<Rol> listaRoles) {
+        String rutaArchivo = BaseDeDatosEnMemoria.obtenerRutaArchivoPersistencia();
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(rutaArchivo))) {
+            oos.writeObject(listaRoles);
+            oos.flush();
+            System.out.println("Datos guardados correctamente en: " + rutaArchivo);
+        } catch (IOException e) {
+            System.err.println("Error al guardar los datos: " + e.getMessage());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Rol> recuperarDatos() {
+        String rutaArchivo = BaseDeDatosEnMemoria.obtenerRutaArchivoPersistencia();
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(rutaArchivo))) {
+            List<Rol> listaRoles = (List<Rol>) ois.readObject();
+            System.out.println("Datos recuperados correctamente desde: " + rutaArchivo);
+            return listaRoles;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error al recuperar los datos: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    private static String obtenerRutaArchivoPersistencia() {
+        String rutaUsuario = System.getProperty("user.home");
+        String rutaCarpeta = rutaUsuario + File.separator + NOMBRE_CARPETA;
+        File carpeta = new File(rutaCarpeta);
+
+        if (!carpeta.exists()) {
+            carpeta.mkdirs();
+        }
+
+        return rutaCarpeta + File.separator + NOMBRE_ARCHIVO;
     }
 
 }

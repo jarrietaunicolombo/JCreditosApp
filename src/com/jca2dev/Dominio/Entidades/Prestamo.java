@@ -2,6 +2,7 @@ package com.jca2dev.Dominio.Entidades;
 
 import com.jca2dev.Dominio.Constantes.EstadoDePrestamoEnum;
 import com.jca2dev.Dominio.Constantes.TipoDeCuotaEnum;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Prestamo {
+public class Prestamo  implements Serializable{
 
     private Integer id;
     private LocalDateTime fechaSolicitud;
