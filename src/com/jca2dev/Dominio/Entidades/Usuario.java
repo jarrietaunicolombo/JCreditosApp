@@ -18,13 +18,13 @@ public class Usuario {
     protected String primerApellido;
     protected String segundoApellido;
     protected String email;
-    
+
     //     Relaciones
     protected Rol rol;
 
     // Constructores
     public Usuario(String codigo, String primerNombre, String primerApellido, String email, Rol rol) {
-        if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+        if (rol == null || rol.getId() == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
             var menesaje = "Al crear un usuario se requiere un rol valido";
             throw new IllegalArgumentException(menesaje);
         }
@@ -115,9 +115,8 @@ public class Usuario {
     }
 
     // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void setRol(Rol rol) {
-        if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+        if (rol == null || rol.getId() == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
             var menesaje = "Al crear un usuario se requiere un rol valido";
             throw new IllegalArgumentException(menesaje);
         }
@@ -126,13 +125,13 @@ public class Usuario {
     }
 
     void sincronizarRol(Rol aThis) {
-         if (rol == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
+        if (rol == null || rol.getId() == null || rol.getId() <= 0 || rol.getNombre().trim().isEmpty()) {
             var menesaje = "Al crear un usuario se requiere un rol valido";
             throw new IllegalArgumentException(menesaje);
         }
         this.rol = rol;
     }
-    
+
     @Override
     public String toString() {
         return "Usuario\n"
@@ -148,5 +147,4 @@ public class Usuario {
                 + "Rol              : " + rol.getNombre() + "\n";
     }
 
-    
 }

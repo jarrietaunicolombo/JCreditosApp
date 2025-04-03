@@ -7,7 +7,7 @@ package com.jca2dev.Dominio.Entidades;
 public class PrestamoInversion {
 
     // Propiedades de instancia u objeto
-    private int id;
+    private Integer id;
     private double montoUtilizado;
 
     //     Relaciones 
@@ -16,12 +16,12 @@ public class PrestamoInversion {
 
     // Constructores
     public PrestamoInversion(double montoUtilizado, Inversion inversion, Prestamo prestamo) {
-        if (inversion == null || inversion.getId() <= 0) {
+        if (inversion == null || inversion.getId() == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
 
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -32,11 +32,11 @@ public class PrestamoInversion {
     }
 
     //    Gets y Sets
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,7 +59,7 @@ public class PrestamoInversion {
    // Metodos para garantizar las restrcciones de las relaciones 
     
     public void setInversion(Inversion inversion) {
-        if (inversion == null || inversion.getId() <= 0) {
+        if (inversion == null || inversion.getId() == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -68,7 +68,7 @@ public class PrestamoInversion {
     }
 
     public void setPrestamo(Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -77,7 +77,7 @@ public class PrestamoInversion {
     }
 
     void sincronizarInversion(Inversion inversion) {
-        if (inversion == null || inversion.getId() <= 0) {
+        if (inversion == null || inversion.getId() == null || inversion.getId() <= 0) {
             var mensaje = "La Inversion no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -85,7 +85,7 @@ public class PrestamoInversion {
     }
 
     void sincronizarPrestamo(Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }

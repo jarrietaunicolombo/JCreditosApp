@@ -4,6 +4,7 @@ import com.jca2dev.Dominio.Constantes.EstadoDePagoEnum;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -11,8 +12,7 @@ import java.util.List;
  */
 public class Pago {
 
-     // propidades de instancia u objeto
-    private int id;
+    private Integer id;
     private LocalDateTime fechaCobro;
     private LocalDateTime fechaPago;
     private double monto;
@@ -22,13 +22,11 @@ public class Pago {
     private String observaciones;
     private EstadoDePagoEnum estado;
 
-    //     Relaciones comentadas
     private Prestamo prestamo;
     private List<CobradorPago> cobradores;
 
-    // Constructores
-    public Pago(int id, int numeroCuota, double monto, Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+    public Pago(Integer id, int numeroCuota, double monto, Prestamo prestamo) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -42,7 +40,6 @@ public class Pago {
         cobradores = new ArrayList<>();
     }
 
-    // Sets y Gets
     public EstadoDePagoEnum getEstado() {
         return estado;
     }
@@ -51,12 +48,11 @@ public class Pago {
         this.estado = estado;
     }
 
-    
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -121,10 +117,8 @@ public class Pago {
         return prestamo;
     }
 
-    // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void setPrestamo(Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -133,7 +127,7 @@ public class Pago {
     }
 
     public void sincronizarPrestamo(Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -149,29 +143,26 @@ public class Pago {
     }
 
     public void agregarCobrador(CobradorPago cobrador) {
-        if (cobrador == null || cobrador.getId() <= 0
+        if (cobrador == null || cobrador.getId() == null || cobrador.getId() <= 0
                 || cobrador.getCobrador().getCodigo().trim().isEmpty()) {
             var mensaje = "El Cobrador no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        
-        if (cobrador.getPago().getPrestamo().getId() != this.getPrestamo().getId())
-        {
+
+        if (!Objects.equals(cobrador.getPago().getPrestamo().getId(), this.getPrestamo().getId())) {
             var mensaje = "El Prestamo no correponde al Pago asignado";
             throw new IllegalArgumentException(mensaje);
-        } 
-        
-        if (cobrador.getPago().getId() != this.id)
-        {
+        }
+
+        if (!Objects.equals(cobrador.getPago().getId(), this.id)) {
             var mensaje = "El pago no correponde al Pago asignado";
             throw new IllegalArgumentException(mensaje);
-        } 
-        
+        }
+
         var existe = this.cobradores.stream()
-                .anyMatch(c -> c != null && 
-                c.getCobrador().getCodigo()
-                .equalsIgnoreCase(cobrador.getCobrador().getCodigo()));
-        
+                .anyMatch(c -> c != null &&
+                        c.getCobrador().getCodigo().equalsIgnoreCase(cobrador.getCobrador().getCodigo()));
+
         if (!existe) {
             this.cobradores.add(cobrador);
         }
@@ -193,5 +184,4 @@ public class Pago {
                 + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n"
                 + "Cobradores asignados: " + (cobradores != null ? cobradores.size() : 0) + "\n";
     }
-
 }

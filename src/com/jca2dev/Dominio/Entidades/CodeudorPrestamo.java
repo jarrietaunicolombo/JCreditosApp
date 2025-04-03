@@ -9,19 +9,16 @@ import java.util.Objects;
  */
 public class CodeudorPrestamo {
 
-    // propidades de instancia u objeto
-    private int id;
+    private Integer id;
     private String relacionDeudor;
     private boolean activo;
     private LocalDateTime fechaAsignacion;
-   
-    //Relaciones
+
     private Codeudor codeudor;
     private Prestamo prestamo;
 
-    // Constructores
     public CodeudorPrestamo(String relacionDeudor, Codeudor codeudor, Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener ID invalido.";
             throw new IllegalArgumentException(mensaje);
         }
@@ -38,12 +35,11 @@ public class CodeudorPrestamo {
         this.prestamo = prestamo;
     }
 
-    //    Gets y Sets
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -75,10 +71,8 @@ public class CodeudorPrestamo {
         return prestamo;
     }
 
-    // Metodos para garantizar las restrcciones de las relaciones 
-    
     public void setPrestamo(Prestamo prestamo) {
-        if (prestamo == null || prestamo.getId() <= 0) {
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
             var mensaje = "El codeudor no puede ser nulo ni tener Id invacío.";
             throw new IllegalArgumentException(mensaje);
         }
@@ -91,8 +85,7 @@ public class CodeudorPrestamo {
     }
 
     public void setCodeudor(Codeudor codeudor) {
-        if (codeudor == null || codeudor.getCodigo() == null 
-                || codeudor.getCodigo().trim().isEmpty()) {
+        if (codeudor == null || codeudor.getCodigo() == null || codeudor.getCodigo().trim().isEmpty()) {
             var mensaje = "El codeudor no puede ser nulo ni tener Codigo vacío.";
             throw new IllegalArgumentException(mensaje);
         }
@@ -101,30 +94,28 @@ public class CodeudorPrestamo {
     }
 
     void sincronizarCodeudor(Codeudor codeudor) {
-        if(codeudor == null || codeudor.getCodigo() == null || codeudor.getCodigo().trim().isEmpty()){
-             var mensaje = "El Codeudor no puede ser nulo ni tener Codigo invalido.";
+        if (codeudor == null || codeudor.getCodigo() == null || codeudor.getCodigo().trim().isEmpty()) {
+            var mensaje = "El Codeudor no puede ser nulo ni tener Codigo invalido.";
             throw new IllegalArgumentException(mensaje);
         }
         this.codeudor = codeudor;
     }
-    
+
     void sincronizarPrestamo(Prestamo prestamo) {
-        if(prestamo == null  || prestamo.getId() <= 0){
-             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido.";
+        if (prestamo == null || prestamo.getId() == null || prestamo.getId() <= 0) {
+            var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido.";
             throw new IllegalArgumentException(mensaje);
         }
         this.prestamo = prestamo;
     }
-    
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         CodeudorPrestamo that = (CodeudorPrestamo) o;
+
         return Objects.equals(codeudor, that.codeudor)
                 && Objects.equals(prestamo, that.prestamo);
     }
@@ -144,6 +135,4 @@ public class CodeudorPrestamo {
                 + "Codeudor: " + (codeudor != null ? codeudor.getCodigo() : "null") + "\n"
                 + "Prestamo ID: " + (prestamo != null ? prestamo.getId() : "null") + "\n";
     }
-
-    
 }

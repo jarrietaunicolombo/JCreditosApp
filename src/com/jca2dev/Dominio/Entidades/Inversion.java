@@ -11,7 +11,7 @@ import java.util.List;
 public class Inversion {
 
     // propidades de instancia u objeto
-    private int id;
+    private Integer id;
     private String nombre;
     private double monto;
     private String procedencia;
@@ -39,11 +39,11 @@ public class Inversion {
     }
 
     // Gets y Sets
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -125,23 +125,27 @@ public class Inversion {
     }
 
     public void agregarPrestamo(PrestamoInversion prestamoInversion) {
-        if (prestamoInversion == null || prestamoInversion.getId() <= 0
-                || prestamoInversion.getPrestamo().getId() <= 0) {
+        if (prestamoInversion == null
+                || prestamoInversion.getId() == null || prestamoInversion.getId() <= 0
+                || prestamoInversion.getPrestamo().getId() == null || prestamoInversion.getPrestamo().getId() <= 0) {
             var mensaje = "El Prestamo no puede ser nulo ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
 
-        if (prestamoInversion.getInversion().getId() != id) {
+        if (prestamoInversion.getInversion().getId() == null || !prestamoInversion.getInversion().getId().equals(id)) {
             var mensaje = "La Inversion del Prestamo no corresponde a la Inversion asignada";
             throw new IllegalArgumentException(mensaje);
         }
 
         var existe = this.prestamos.stream()
                 .anyMatch(p -> p != null
-                && p.getId() == prestamoInversion.getPrestamo().getId());
+                && p.getId() != null
+                && p.getId().equals(prestamoInversion.getPrestamo().getId()));
+
         if (!existe) {
             this.prestamos.add(prestamoInversion);
         }
+
         prestamoInversion.sincronizarInversion(this);
     }
 

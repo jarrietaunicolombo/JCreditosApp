@@ -10,7 +10,6 @@ import java.util.List;
 public class Codeudor extends Deudor {
 
     // propidades de instancia u objeto
-    private int id;
     private boolean tieneViviendaPropia;
     private boolean tieneVehiculo;
 

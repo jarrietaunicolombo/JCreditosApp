@@ -1,6 +1,7 @@
 package com.jca2dev.Dominio.Entidades;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  *
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 public class IntentoDeCobro {
 
     // propidades de instancia u objeto
-    private int id;
+    private Integer id;
     private boolean exitoso;
     private LocalDateTime fechaIntento;
     private float valorPagado;
@@ -20,7 +21,7 @@ public class IntentoDeCobro {
 
     // Constructores 
     public IntentoDeCobro(float valorPagado, CobradorPago cobradorPago) {
-        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+        if (cobradorPago == null || cobradorPago.getId() == null || cobradorPago.getId() <= 0) {
             var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -29,13 +30,13 @@ public class IntentoDeCobro {
         this.exitoso = valorPagado > 0;
         this.cobradorPago = cobradorPago;
     }
-    
-    //    Gets y Sets
-    public int getId() {
+
+    // Gets y Sets
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -76,10 +77,9 @@ public class IntentoDeCobro {
         return cobradorPago;
     }
 
-    // Metodos para garantizar las restrcciones de las relaciones 
-    
+    // Métodos para garantizar las restricciones de las relaciones 
     public void setCobradorPago(CobradorPago cobradorPago) {
-        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+        if (cobradorPago == null || cobradorPago.getId() == null || cobradorPago.getId() <= 0) {
             var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -88,12 +88,11 @@ public class IntentoDeCobro {
     }
 
     void sincronizarCobradorPago(CobradorPago cobradorPago) {
-        if (cobradorPago == null || cobradorPago.getId() <= 0) {
+        if (cobradorPago == null || cobradorPago.getId() == null || cobradorPago.getId() <= 0) {
             var mensaje = "El CobradorPago no puede ser nulo o tener un Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
         this.cobradorPago = cobradorPago;
-
     }
 
     @Override

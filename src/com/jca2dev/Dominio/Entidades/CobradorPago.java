@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CobradorPago {
 
-    private int id;
+    private Integer id;
     private LocalDateTime fechaAsignacion;
     private String observaciones;
 
@@ -26,7 +26,7 @@ public class CobradorPago {
             var mensaje = "El Cobrador no puede ser null, no tener codigo invalido";
             throw new IllegalArgumentException(mensaje);
         }
-        if (pago == null || pago.getId() <= 0) {
+        if (pago == null || pago.getId() == null || pago.getId() <= 0) {
             var mensaje = "El Pago no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -37,11 +37,11 @@ public class CobradorPago {
     }
 
     // Gets y Sets
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -79,13 +79,12 @@ public class CobradorPago {
 
     // Metodos para garantizar las restrcciones de las relaciones
     public void setPago(Pago pago) {
-        if (pago == null || pago.getId() <= 0) {
+        if (pago == null || pago.getId() == null || pago.getId() <= 0) {
             var mensaje = "El Pago no puede ser null, no tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
         this.pago = pago;
         pago.agregarCobrador(this);
-
     }
 
     public void setCobrador(Cobrador cobrador) {
@@ -107,7 +106,7 @@ public class CobradorPago {
     }
 
     void sincronizarPago(Pago pago) {
-        if (pago == null || pago.getId() <= 0) {
+        if (pago == null || pago.getId() == null || pago.getId() <= 0) {
             var mensaje = "El Cobrador no puede ser nulo, ni tener Id invalido";
             throw new IllegalArgumentException(mensaje);
         }
@@ -115,21 +114,21 @@ public class CobradorPago {
     }
 
     public void agregarIntentoDeCobro(IntentoDeCobro intentoCobro) {
-        if (intentoCobro == null || intentoCobro.getId() <= 0) {
+        if (intentoCobro == null || intentoCobro.getId() == null || intentoCobro.getId() <= 0) {
             var mensaje = "El Intento de Cobro no puede ser null y debe tener Id valido";
             throw new IllegalArgumentException(mensaje);
         }
 
-        if (intentoCobro.getCobradorPago().getId() != id
-                || intentoCobro.getCobradorPago().getPago()
-                        .getId() != this.getPago().getId()) {
+        if (!intentoCobro.getCobradorPago().getId().equals(id)
+                || !intentoCobro.getCobradorPago().getPago().getId()
+                        .equals(this.getPago().getId())) {
             var mensaje = "El Intento de Cobro no pertenece al Pago asignado";
             throw new IllegalArgumentException(mensaje);
         }
 
         var existe = this.intentosCobros.stream()
                 .anyMatch(intento -> intento != null
-                && intento.getId() == intentoCobro.getId());
+                && intento.getId().equals(intentoCobro.getId()));
         if (!existe) {
             intentosCobros.add(intentoCobro);
         }

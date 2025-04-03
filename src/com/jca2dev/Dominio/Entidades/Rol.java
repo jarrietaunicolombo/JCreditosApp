@@ -8,7 +8,7 @@ import java.util.List;
 public class Rol {
 
     // Propiedades de instancia u objeto
-    private int id;
+    private Integer id;
     private String nombre;
     private String descripcion;
     private String icono;
@@ -34,11 +34,11 @@ public class Rol {
     }
 
     //    Gets y Sets
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -99,8 +99,7 @@ public class Rol {
             throw new IllegalArgumentException(mensaje);
         }
         
-        if (usuario.getRol().getId() != this.id)
-        {
+        if (usuario.getRol() == null || usuario.getRol().getId() == null || !usuario.getRol().getId().equals(this.id)) {
             var mensaje = "El Usuario no puede al Rol asignado";
             throw new IllegalArgumentException(mensaje);
         }

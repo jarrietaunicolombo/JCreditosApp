@@ -5,6 +5,7 @@ import com.jca2dev.Dominio.Constantes.TipoDeCuotaEnum;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -12,8 +13,7 @@ import java.util.List;
  */
 public class Prestamo {
 
-    //  // propidades de instancia u objeto
-    private int id;
+    private Integer id;
     private LocalDateTime fechaSolicitud;
     private EstadoDePrestamoEnum estado;
     private double monto;
@@ -24,23 +24,21 @@ public class Prestamo {
     private double saldo;
     private String observaciones;
 
-    // Relaciones 
     private Prestamista prestamista;
     private Deudor deudor;
     private List<CodeudorPrestamo> codeudores;
     private List<PrestamoInversion> inversiones;
     private List<Pago> pagos;
 
-    // Constructores
-    public Prestamo(int id, double monto, double tasaInteres, int numeroCuotas,
-            TipoDeCuotaEnum tipoDeCuota, Prestamista prestamista, Deudor deudor) {
+    public Prestamo(Integer id, double monto, double tasaInteres, int numeroCuotas,
+                    TipoDeCuotaEnum tipoDeCuota, Prestamista prestamista, Deudor deudor) {
         this.id = id;
         this.monto = monto;
         this.tasaInteres = tasaInteres;
         this.numeroCuotas = numeroCuotas;
         this.tipoDeCuota = tipoDeCuota;
         this.fechaSolicitud = LocalDateTime.now();
-        this.estado = estado.PENDIENTE;
+        this.estado = EstadoDePrestamoEnum.PENDIENTE;
         this.saldo = monto;
         this.prestamista = prestamista;
         this.deudor = deudor;
@@ -49,21 +47,20 @@ public class Prestamo {
         pagos = new ArrayList<>();
     }
 
-    // Gets y Sets
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public EstadoDePrestamoEnum getEstado() {
         return estado;
     }
 
     public void setEstado(EstadoDePrestamoEnum estado) {
         this.estado = estado;
-    }
-    
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDateTime getFechaSolicitud() {
@@ -73,8 +70,6 @@ public class Prestamo {
     public void setFechaSolicitud(LocalDateTime fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
-
-
 
     public double getMonto() {
         return monto;
@@ -112,7 +107,7 @@ public class Prestamo {
         return tipoDeCuota;
     }
 
-    public void setTipoDeCuota(TipoDeCuotaEnum tipoCuota) {
+    public void setTipoDeCuota(TipoDeCuotaEnum tipoDeCuota) {
         this.tipoDeCuota = tipoDeCuota;
     }
 
@@ -139,8 +134,7 @@ public class Prestamo {
     public void setPrestamista(Prestamista prestamista) {
         if (prestamista == null || prestamista.getCodigo() == null
                 || prestamista.getCodigo().trim().isEmpty()) {
-            var mensaje = "El Prestamista no puede ser nulo ni tener un Codigo invalido.";
-            throw new IllegalArgumentException(mensaje);
+            throw new IllegalArgumentException("El Prestamista no puede ser nulo ni tener un Codigo invalido.");
         }
 
         this.prestamista = prestamista;
@@ -154,9 +148,9 @@ public class Prestamo {
     public void setDeudor(Deudor deudor) {
         if (deudor == null || deudor.getCodigo() == null
                 || deudor.getCodigo().trim().isEmpty()) {
-            var mensaje = "El Deudor no puede ser nulo ni tener un Codigo invalido.";
-            throw new IllegalArgumentException(mensaje);
+            throw new IllegalArgumentException("El Deudor no puede ser nulo ni tener un Codigo invalido.");
         }
+
         this.deudor = deudor;
         deudor.agregarPrestamo(this);
     }
@@ -165,8 +159,8 @@ public class Prestamo {
         return codeudores;
     }
 
-    public void setCodeudores(List<CodeudorPrestamo> coodeudores) {
-        this.codeudores = coodeudores;
+    public void setCodeudores(List<CodeudorPrestamo> codeudores) {
+        this.codeudores = codeudores;
     }
 
     public List<PrestamoInversion> getInversiones() {
@@ -185,26 +179,21 @@ public class Prestamo {
         this.pagos = pagos;
     }
 
-    // Metodos para garantizar las restrcciones de las relaciones
-    
     public void agregarCodeudor(CodeudorPrestamo codeudorPrestamo) {
-        if (codeudorPrestamo == null || codeudorPrestamo.getId() <= 0
+        if (codeudorPrestamo == null || codeudorPrestamo.getId() == null || codeudorPrestamo.getId() <= 0
                 || codeudorPrestamo.getCodeudor().getCodigo().trim().isEmpty()) {
-            var mensaje = "El Codeudor no puede ser nulo ni tener un codigo invalido.";
-            throw new IllegalArgumentException(mensaje);
+            throw new IllegalArgumentException("El Codeudor no puede ser nulo ni tener un codigo invalido.");
         }
 
-        if (codeudorPrestamo.getPrestamo().getId() != this.id) {
-            var mensaje = "El Codeudor no corresponde al Prestamo asignado.";
-            throw new IllegalArgumentException(mensaje);
+        if (!Objects.equals(codeudorPrestamo.getPrestamo().getId(), this.id)) {
+            throw new IllegalArgumentException("El Codeudor no corresponde al Prestamo asignado.");
         }
 
         var existe = this.codeudores.stream()
                 .anyMatch(c -> c != null
-                && c.getId() == codeudorPrestamo.getId()
-                && c.getCodeudor().getCodigo()
-                        .equalsIgnoreCase(codeudorPrestamo.getCodeudor()
-                                .getCodigo()));
+                        && Objects.equals(c.getId(), codeudorPrestamo.getId())
+                        && c.getCodeudor().getCodigo()
+                        .equalsIgnoreCase(codeudorPrestamo.getCodeudor().getCodigo()));
 
         if (!existe) {
             this.codeudores.add(codeudorPrestamo);
@@ -214,60 +203,54 @@ public class Prestamo {
     }
 
     public void agregarInversion(PrestamoInversion prestamoInverson) {
-        if (prestamoInverson == null || prestamoInverson.getId() <= 0
-                || prestamoInverson.getInversion().getId() <= 0) {
-            var mensaje = "La inversion no puede ser nulo ni tener un In invalido.";
-            throw new IllegalArgumentException(mensaje);
+        if (prestamoInverson == null || prestamoInverson.getId() == null || prestamoInverson.getId() <= 0
+                || prestamoInverson.getInversion().getId() == null || prestamoInverson.getInversion().getId() <= 0) {
+            throw new IllegalArgumentException("La inversion no puede ser nula ni tener un Id invalido.");
         }
 
-        if (prestamoInverson.getPrestamo().getId() != this.getId()) {
-            var mensaje = "La Inversion no correspoonde al Prestamo asignado.";
-            throw new IllegalArgumentException(mensaje);
+        if (!Objects.equals(prestamoInverson.getPrestamo().getId(), this.getId())) {
+            throw new IllegalArgumentException("La Inversion no corresponde al Prestamo asignado.");
         }
 
-        if (! prestamoInverson.getPrestamo().prestamista.getCodigo()
-            .equalsIgnoreCase(this.prestamista.getCodigo())) 
-        {
-            var mensaje = "La Inversion no corresponde al Prestamista del prestamo asignado";
-            throw new IllegalArgumentException(mensaje);
+        if (!prestamoInverson.getPrestamo().getPrestamista().getCodigo()
+                .equalsIgnoreCase(this.prestamista.getCodigo())) {
+            throw new IllegalArgumentException("La Inversion no corresponde al Prestamista del prestamo asignado");
         }
 
         var existe = this.inversiones.stream()
                 .anyMatch(i -> i != null &&
-                i.getId() == prestamoInverson.getId());
-        
+                        Objects.equals(i.getId(), prestamoInverson.getId()));
+
         if (!existe) {
             this.inversiones.add(prestamoInverson);
         }
+
         prestamoInverson.sincronizarPrestamo(this);
     }
 
     public void agregarPago(Pago pago) {
-        if (pago == null || pago.getId() <= 0) {
-            var mensaje = "El Pago no puede ser nulo ni tener un Id invalido.";
-            throw new IllegalArgumentException(mensaje);
+        if (pago == null || pago.getId() == null || pago.getId() <= 0) {
+            throw new IllegalArgumentException("El Pago no puede ser nulo ni tener un Id invalido.");
         }
-        
-         if (pago.getPrestamo().getId() != this.id) {
-            var mensaje = "El Pago no corresponde al Prestamo asignado.";
-            throw new IllegalArgumentException(mensaje);
+
+        if (!Objects.equals(pago.getPrestamo().getId(), this.id)) {
+            throw new IllegalArgumentException("El Pago no corresponde al Prestamo asignado.");
         }
-         
-         
+
         var existe = this.pagos.stream()
-                .anyMatch(p -> p.getId() == pago.getId());
+                .anyMatch(p -> Objects.equals(p.getId(), pago.getId()));
 
         if (!existe) {
             this.pagos.add(pago);
         }
+
         pago.sincronizarPrestamo(this);
     }
 
-    void sincronizarDeudor(Deudor aThis) {
+    void sincronizarDeudor(Deudor deudor) {
         if (deudor == null || deudor.getCodigo() == null
                 || deudor.getCodigo().trim().isEmpty()) {
-            var mensaje = "El Deudor no puede ser nulo ni tener un Codigo invalido.";
-            throw new IllegalArgumentException(mensaje);
+            throw new IllegalArgumentException("El Deudor no puede ser nulo ni tener un Codigo invalido.");
         }
 
         this.deudor = deudor;
@@ -276,8 +259,7 @@ public class Prestamo {
     void sincronizarPrestamista(Prestamista prestamista) {
         if (prestamista == null || prestamista.getCodigo() == null
                 || prestamista.getCodigo().trim().isEmpty()) {
-            var mensaje = "El Prestamista no puede ser nulo ni tener un Codigo invalido.";
-            throw new IllegalArgumentException(mensaje);
+            throw new IllegalArgumentException("El Prestamista no puede ser nulo ni tener un Codigo invalido.");
         }
 
         this.prestamista = prestamista;
@@ -303,5 +285,4 @@ public class Prestamo {
                 + "Inversiones usadas: " + (inversiones != null ? inversiones.size() : 0) + "\n"
                 + "Pagos generados: " + (pagos != null ? pagos.size() : 0) + "\n";
     }
-
 }
