@@ -13,37 +13,37 @@ public interface IRolRepositorio {
      * Guarda un nuevo rol. El ID puede ser generado dentro de la implementación.
      * @param rol objeto Rol a guardar
      */
-    public void guardar(Rol rol);
+     void guardar(Rol rol);
 
     /**
      * Busca un rol por su identificador único.
      * @param id identificador del rol
      * @return Rol encontrado o null si no existe
      */
-    public Rol buscarPorId(Integer id);
+     Rol buscarPorId(Integer id);
 
     /**
      * Busca roles que contengan el texto en su nombre.
      * @param nombre texto a buscar
      * @return lista de roles cuyo nombre coincida parcial o totalmente
      */
-    public List<Rol> buscarPorNombre(String nombre);
+     List<Rol> buscarPorNombre(String nombre);
 
     /**
      * Actualiza un rol existente.
      * @param rol objeto Rol con los datos modificados
      */
-    public void editar(Rol rol);
+     void editar(Rol rol);
 
     /**
      * Elimina un rol por su identificador.
      * @param id identificador del rol a eliminar
      */
-    public void eliminar(Integer id);
+     void eliminar(Integer id);
 
     /**
      * Obtiene todos los roles registrados.
      * @return lista completa de roles
      */
-    public List<Rol> obtenerTodos();
+     List<Rol> obtenerTodos();
 }
