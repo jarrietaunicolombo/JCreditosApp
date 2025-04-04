@@ -40,6 +40,7 @@ public class BaseDeDatosEnMemoria {
             guardarDatos(rolesEnBd);
         } else {
             rolesEnBd.addAll(rolesRecuperados);
+            calibrarIncrementoDeTodosLosIDs();
         }
     }
 
@@ -239,6 +240,66 @@ public class BaseDeDatosEnMemoria {
         }
 
         return rutaCarpeta + File.separator + NOMBRE_ARCHIVO;
+    }
+
+    private static void calibrarIncrementoDeTodosLosIDs() {
+        // Rol
+        int proximoIdRol = rolesEnBd.stream()
+                .mapToInt(Rol::getId)
+                .max()
+                .orElse(0) + 1;
+        Rol.calibrarIncrementoDeId(proximoIdRol);
+
+        // Prestamo
+        int proximoIdPrestamo = prestamosEnBd.stream()
+                .mapToInt(Prestamo::getId)
+                .max()
+                .orElse(0) + 1;
+        Prestamo.calibrarIncrementoDeId(proximoIdPrestamo);
+
+        // Inversion
+        int proximoIdInversion = inversionesEnBd.stream()
+                .mapToInt(Inversion::getId)
+                .max()
+                .orElse(0) + 1;
+        Inversion.calibrarIncrementoDeId(proximoIdInversion);
+
+        // Pago
+        int proximoIdPago = pagosEnBd.stream()
+                .mapToInt(Pago::getId)
+                .max()
+                .orElse(0) + 1;
+        Pago.calibrarIncrementoDeId(proximoIdPago);
+
+        // PrestamoInversion
+        int proximoIdPrestamoInversion = prestamosInversionesEnBd.stream()
+                .mapToInt(PrestamoInversion::getId)
+                .max()
+                .orElse(0) + 1;
+        PrestamoInversion.calibrarIncrementoDeId(proximoIdPrestamoInversion);
+
+        // CobradorPago
+        int proximoIdCobradorPago = cobradoresPagosEnBd.stream()
+                .mapToInt(CobradorPago::getId)
+                .max()
+                .orElse(0) + 1;
+        CobradorPago.calibrarIncrementoDeId(proximoIdCobradorPago);
+
+        // IntentoDeCobro
+        int proximoIdIntentoCobro = intentosDeCobrosEnBd.stream()
+                .mapToInt(IntentoDeCobro::getId)
+                .max()
+                .orElse(0) + 1;
+        IntentoDeCobro.calibrarIncrementoDeId(proximoIdIntentoCobro);
+
+        // CodeudorPrestamo
+        int proximoIdCodeudorPrestamo = codeudoresPestamosEnBd.stream()
+                .mapToInt(CodeudorPrestamo::getId)
+                .max()
+                .orElse(0) + 1;
+        CodeudorPrestamo.calibrarIncrementoDeId(proximoIdCodeudorPrestamo);
+
+ 
     }
 
 }
