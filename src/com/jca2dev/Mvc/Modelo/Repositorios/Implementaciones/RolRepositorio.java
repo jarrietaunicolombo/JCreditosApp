@@ -32,25 +32,28 @@ public class RolRepositorio implements IRolRepositorio {
 
     @Override
     public Rol buscarPorId(Integer id) {
+         if (id == null || id.intValue() <= 0) {
+            throw new IllegalArgumentException("Id incorrecto");
+        }
         return BaseDeDatosEnMemoria.getRolesEnBd().stream()
                 .filter(r -> r.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() 
-                -> new EntidadNoEncontradaExcepcion(Rol.class.getSimpleName(), id.toString()));
+                .orElseThrow(()
+                        -> new EntidadNoEncontradaExcepcion(Rol.class.getSimpleName(), id.toString()));
     }
 
-    @Override
-    public List<Rol> buscarPorNombre(String nombre) {
-        if (nombre == null || nombre.isBlank()) return new ArrayList<>();
-
-        var resultado = BaseDeDatosEnMemoria.getRolesEnBd().stream()
-                .filter(r -> r.getNombre().toLowerCase().contains(nombre.toLowerCase()))
-                .collect(Collectors.toList());
-        if (resultado.isEmpty()) {
-            var mensaje = "No existen Roles con el nombre "+nombre;
-            throw new SinResultadosAlConsultarEntidadesExcepcion(mensaje);
+//    @Override
+    public Rol buscarPorNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre es requerido");
         }
-        return resultado;
+
+        return BaseDeDatosEnMemoria.getRolesEnBd().stream()
+                .filter(r -> r.getNombre().toLowerCase().equals(nombre.toLowerCase()))
+                .findFirst()
+                .orElseThrow(()
+                        -> new EntidadNoEncontradaExcepcion(Rol.class.getSimpleName(), nombre));
+
     }
 
     @Override
@@ -73,7 +76,7 @@ public class RolRepositorio implements IRolRepositorio {
     @Override
     public List<Rol> obtenerTodos() {
         var resultado = BaseDeDatosEnMemoria.getRolesEnBd();
-        if(resultado.isEmpty()){
+        if (resultado.isEmpty()) {
             var mensaje = "Actualmente no existen roles almacenados en el sistema";
             throw new SinResultadosAlConsultarEntidadesExcepcion(mensaje);
         }
