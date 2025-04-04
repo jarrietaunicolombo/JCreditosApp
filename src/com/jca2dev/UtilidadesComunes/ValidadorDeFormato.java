@@ -15,7 +15,7 @@ public class ValidadorDeFormato {
      * Valida que el código contenga únicamente letras y números, sin espacios
      * ni caracteres especiales.
      */
-    private void validarFormatoCodigo(String codigo) {
+    public static void validarCodigo(String codigo) {
         if (codigo == null || codigo.isBlank()) {
             throw new IllegalArgumentException("El código es requerido.");
         }
@@ -37,7 +37,7 @@ public class ValidadorDeFormato {
      * Valida que el nombre contenga únicamente letras y espacios. No se
      * permiten números ni caracteres especiales.
      */
-    private void validarFormatoNombre(String nombre) {
+    public static void validarNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre es requerido.");
         }
@@ -61,7 +61,7 @@ public class ValidadorDeFormato {
      * bajos y puntos. Ni la arroba ni el punto pueden estar al inicio ni al
      * final.
      */
-    private void validarFormatoEmail(String email) {
+    public static void validarEmail(String email) {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("El email es requerido.");
         }
