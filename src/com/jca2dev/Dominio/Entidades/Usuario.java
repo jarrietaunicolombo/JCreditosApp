@@ -1,5 +1,6 @@
 package com.jca2dev.Dominio.Entidades;
 
+import com.jca2dev.Dominio.Constantes.EstadoDeUsuarioEnum;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ public class Usuario  implements Serializable{
     protected String codigo;
     protected String password;
     protected LocalDateTime fechaCreacion;
-    protected String estado;
+    protected EstadoDeUsuarioEnum estado;
     protected String primerNombre;
     protected String segundoNombre;
     protected String primerApellido;
@@ -35,7 +36,7 @@ public class Usuario  implements Serializable{
         this.email = email;
         this.rol = rol;
         this.fechaCreacion = LocalDateTime.now();
-        this.estado = "ACTIVO";
+        this.estado = EstadoDeUsuarioEnum.PENDIENTE;
     }
 
     // Gets y Sets
@@ -63,11 +64,11 @@ public class Usuario  implements Serializable{
         this.fechaCreacion = fechaCreacion;
     }
 
-    public String getEstado() {
+    public EstadoDeUsuarioEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoDeUsuarioEnum estado) {
         this.estado = estado;
     }
 

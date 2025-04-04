@@ -1,83 +1,85 @@
 package com.jca2dev;
 
+import com.jca2dev.Dominio.Constantes.EstadoDeUsuarioEnum;
 import com.jca2dev.Dominio.Entidades.*;
 import com.jca2dev.Mvc.Modelo.Persistencia.BaseDeDatosEnMemoria;
 import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.RolRepositorio;
+import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.UsuarioRepositorio;
+
 
 
 public class Principal {
 
     public static void main(String[] args) {
-        // Siempre iniciar la BD antes de cualquier operación
         BaseDeDatosEnMemoria.iniciar();
 
-        // PRUEBAS CON REPOSITORIO DE ROL
         RolRepositorio rolRepositorio = new RolRepositorio();
+        UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
 
         System.out.println("\n=== Prueba obtenerTodos() ===");
         try {
-            rolRepositorio.obtenerTodos().forEach(System.out::println);
+            usuarioRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba buscarPorId(1) ===");
+        System.out.println("\n=== Prueba buscarPorCodigo(\"U123\") ===");
         try {
-            Rol rol = rolRepositorio.buscarPorId(1);
-            System.out.println("Rol encontrado: " + rol.getNombre());
+            Usuario usuario = usuarioRepositorio.buscarPorCodigo("U123");
+            System.out.println("Usuario encontrado: " + usuario.getPrimerNombre());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba buscarPorNombre(\"admin\") ===");
+        System.out.println("\n=== Prueba buscarPorNombre(\"Carlos\") ===");
         try {
-            System.out.println("Rol: "+rolRepositorio.buscarPorNombre("admin"));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        System.out.println("\n=== Prueba editar() ===");
-        try {
-            Rol rol = rolRepositorio.buscarPorId(1);
-            rol.setDescripcion("Este es el rol de administración del sistema.");
-            rol.setIcono("👑");
-            rolRepositorio.editar(rol);
-            System.out.println("Rol actualizado correctamente.");
+            usuarioRepositorio.buscarPorNombre("Carlos").forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
         System.out.println("\n=== Prueba guardar() ===");
         try {
-            Rol nuevoRol = new Rol("Operador");
-            nuevoRol.setDescripcion("Gestiona operaciones diarias.");
-            nuevoRol.setIcono("⚙️");
-            rolRepositorio.guardar(nuevoRol);
-            System.out.println("Rol guardado exitosamente.");
+            Rol rolUsuario = rolRepositorio.buscarPorNombre("Usuario");
+
+            Usuario nuevoUsuario = new Usuario(
+                "U123",                   // Código
+                "John",                   // Primer Nombre
+                "Arrieta",                // Primer Apellido
+                "john.arriera2@gmail.com",    // Email
+                rolUsuario                // Rol
+            );
+            nuevoUsuario.setSegundoNombre("Carlos");
+            nuevoUsuario.setSegundoApellido("Arrieta");
+            nuevoUsuario.setPassword("123456");
+
+            usuarioRepositorio.guardar(nuevoUsuario);
+            System.out.println("Usuario guardado correctamente.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-System.out.println("\n=== Prueba obtenerTodos() ===");
+
+        System.out.println("\n=== Prueba editar() ===");
         try {
-            rolRepositorio.obtenerTodos().forEach(System.out::println);
+            Usuario usuario = usuarioRepositorio.buscarPorCodigo("U123");
+            usuario.setSegundoNombre("Andresito");
+            usuario.setEmail("john.arriera2@gmail.com");
+            usuario.setPassword("nuevaClaveSegura");
+            usuario.setEstado(EstadoDeUsuarioEnum.ACTIVO);
+
+            usuarioRepositorio.editar(usuario);
+            System.out.println("Usuario editado correctamente.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        System.out.println("\n=== Prueba eliminar() ===");
+
+        System.out.println("\n=== Prueba eliminar(\"U123\") ===");
         try {
-            var rol = rolRepositorio.buscarPorNombre("Operador");
-            rolRepositorio.eliminar(rol.getId());
-            System.out.println("Rol eliminado exitosamente.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        System.out.println("\n=== Prueba obtenerTodos() ===");
-        try {
-            rolRepositorio.obtenerTodos().forEach(System.out::println);
+            usuarioRepositorio.eliminar("U123");
+            System.out.println("Usuario eliminado correctamente.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
-    // Los métodos crearDatosIniciales() y mostrarDatos() permanecen igual
 }
+
