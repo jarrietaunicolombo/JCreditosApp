@@ -27,7 +27,7 @@ public interface IRolRepositorio {
      * @param nombre texto a buscar
      * @return lista de roles cuyo nombre coincida parcial o totalmente
      */
-     List<Rol> buscarPorNombre(String nombre);
+     Rol buscarPorNombre(String nombre);
 
     /**
      * Actualiza un rol existente.
