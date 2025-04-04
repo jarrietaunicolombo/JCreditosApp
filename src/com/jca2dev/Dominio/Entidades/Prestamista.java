@@ -114,6 +114,8 @@ public class Prestamista extends Usuario  implements Serializable{
     public String toString() {
         return "Prestamista\n"
                 + "-----------------\n"
+                + super.toString()+"\n"
+                + "-----------------\n"
                 + "Capital: " + capital + "\n"
                 + "Prestamos realizados: " + (prestamos != null ? prestamos.size() : 0) + "\n"
                 + "Inversiones registradas: " + (inversiones != null ? inversiones.size() : 0) + "\n";
