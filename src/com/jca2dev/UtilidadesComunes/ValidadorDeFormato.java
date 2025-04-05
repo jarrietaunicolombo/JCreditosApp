@@ -1,12 +1,12 @@
 package com.jca2dev.UtilidadesComunes;
 
 /**
- * Clase utilitaria para validar el formato de datos de entrada.
- * Incluye validaciones básicas de código, nombre, y email.
- * 
- * Este enfoque sigue el patrón MVC clásico, separando las reglas
- * de formato del modelo de dominio.
- * 
+ * Clase utilitaria para validar el formato de datos de entrada. Incluye
+ * validaciones básicas de código, nombre, y email.
+ *
+ * Este enfoque sigue el patrón MVC clásico, separando las reglas de formato del
+ * modelo de dominio.
+ *
  * @author John
  */
 public class ValidadorDeFormato {
@@ -39,13 +39,13 @@ public class ValidadorDeFormato {
      */
     public static void validarNombre(String nombre, String nombreDelCambo) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El "+nombreDelCambo+" es requerido.");
+            throw new IllegalArgumentException("El " + nombreDelCambo + " es requerido.");
         }
 
         for (char c : nombre.toCharArray()) {
             if (!Character.isLetter(c) && c != ' ') {
                 throw new IllegalArgumentException(
-                        "El "+nombreDelCambo+" solo puede contener letras y espacios.");
+                        "El " + nombreDelCambo + " solo puede contener letras y espacios.");
             }
         }
 
@@ -101,4 +101,45 @@ public class ValidadorDeFormato {
         //     throw new IllegalArgumentException("El email no tiene un formato válido.");
         // }
     }
+
+    /**
+     * Valida que el monto sea positivo.
+     */
+    public static void validarMonto(double monto) {
+        if (monto <= 0) {
+            String mensaje = "El monto del préstamo debe ser mayor a cero.";
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
+
+    /**
+     * Valida que la tasa de interés sea un número real positivo.
+     */
+    public static void validarTasaInteres(double tasaInteres) {
+        if (tasaInteres <= 0 || tasaInteres > 100) {
+            String mensaje = "La tasa de interés debe ser mayor a cero y menor o igual a 100.";
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
+
+    /**
+     * Valida que el número de cuotas sea positivo.
+     */
+    public static void validarNumeroCuotas(int numeroCuotas) {
+        if (numeroCuotas <= 0) {
+            String mensaje = "El número de cuotas debe ser mayor que cero.";
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
+
+    /**
+     * Valida que el saldo sea igual o menor al monto del préstamo.
+     */
+    public static void validarSaldo(double saldo, double monto) {
+        if (saldo < 0 || saldo > monto) {
+            String mensaje = "El saldo no puede ser negativo ni mayor al monto del préstamo.";
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
+
 }

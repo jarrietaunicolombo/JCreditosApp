@@ -89,6 +89,18 @@ public class BaseDeDatosEnMemoria {
         return lista;
     }
 
+    public static List<Prestamo> getPrestamosEnBd() {
+        List<Prestamo> lista = new ArrayList<>();
+        for (Rol rol : rolesEnBd) {
+            for (Usuario u : rol.getUsuarios()) {
+                if (u instanceof Deudor d) {
+                    lista.addAll(d.getPrestamos());
+                }
+            }
+        }
+        return lista;
+    }
+
     public static List<Codeudor> getCodeudoresEnBd() {
         List<Codeudor> lista = new ArrayList<>();
         for (Rol rol : rolesEnBd) {
@@ -299,7 +311,6 @@ public class BaseDeDatosEnMemoria {
                 .orElse(0) + 1;
         CodeudorPrestamo.calibrarIncrementoDeId(proximoIdCodeudorPrestamo);
 
- 
     }
 
 }

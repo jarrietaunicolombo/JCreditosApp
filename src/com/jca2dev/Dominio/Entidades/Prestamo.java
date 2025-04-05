@@ -49,6 +49,8 @@ public class Prestamo  implements Serializable{
         codeudores = new ArrayList<>();
         inversiones = new ArrayList<>();
         pagos = new ArrayList<>();
+        prestamista.agregarPrestamo(this);
+        deudor.agregarPrestamo(this);
     }
 
     public Integer getId() {
