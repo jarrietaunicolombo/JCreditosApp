@@ -1,11 +1,9 @@
 package com.jca2dev;
 
-import com.jca2dev.Dominio.Constantes.GeneroEnum;
-import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
-import com.jca2dev.Dominio.Entidades.Deudor;
+import com.jca2dev.Dominio.Entidades.Codeudor;
 import com.jca2dev.Dominio.Entidades.Rol;
 import com.jca2dev.Mvc.Modelo.Persistencia.BaseDeDatosEnMemoria;
-import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.DeudorRepositorio;
+import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.CodeudorRepositorio;
 import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.RolRepositorio;
 
 public class Principal {
@@ -14,83 +12,82 @@ public class Principal {
         BaseDeDatosEnMemoria.iniciar();
 
         RolRepositorio rolRepositorio = new RolRepositorio();
-        DeudorRepositorio deudorRepositorio = new DeudorRepositorio();
+        CodeudorRepositorio codeudorRepositorio = new CodeudorRepositorio();
 
-        System.out.println("\n=== Prueba obtenerTodos() (Deudores) ===");
+        System.out.println("\n=== Codeudores actualmente en el sistema ===");
         try {
-            deudorRepositorio.obtenerTodos().forEach(System.out::println);
+            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba guardar() (Deudor) ===");
+        System.out.println("\n=== Guardando nuevo codeudor ===");
         try {
-            Rol rolDeudor = rolRepositorio.buscarPorNombre("Deudor");
+            Rol rolCodeudor = rolRepositorio.buscarPorNombre("Codeudor");
+            Codeudor codeudor = new Codeudor("C123", "John", "Arrieta", "john.arrieta@gmail.com", rolCodeudor);
+            codeudor.setSegundoNombre("Carlos");
+            codeudor.setSegundoApellido("Arrieta");
+            codeudor.setPassword("clave123");
+            codeudor.setTieneViviendaPropia(true);
+            codeudor.setTieneVehiculo(false);
 
-            Deudor nuevoDeudor = new Deudor("D001", "John", "Arrieta", "john.arrieta2@hotmail.com", rolDeudor);
-            nuevoDeudor.setSegundoNombre("Carlos");
-            nuevoDeudor.setSegundoApellido("Arrieta");
-            nuevoDeudor.setPassword("claveDeAcceso");
-            nuevoDeudor.setDireccion("Calle 123");
-            nuevoDeudor.setTelefono("3201234567");
-            nuevoDeudor.setGenero(GeneroEnum.MASCULINO);
-            nuevoDeudor.setTipoIdentificacion(TipoDeIdentificacionEnum.CEDULA);
-            nuevoDeudor.setNumeroIdentificacion("1122334455");
+            codeudorRepositorio.guardar(codeudor);
+            System.out.println("Codeudor guardado exitosamente.");
+        } catch (Exception e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
 
-            deudorRepositorio.guardar(nuevoDeudor);
-            System.out.println("✔️ Deudor guardado correctamente.");
+        System.out.println("\n=== Codeudores después de guardar ===");
+        try {
+            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba obtenerTodos() luego de guardar ===");
+        System.out.println("\n=== Buscando codeudor por código 'C123' ===");
         try {
-            deudorRepositorio.obtenerTodos().forEach(System.out::println);
+            Codeudor c = codeudorRepositorio.buscarPorCodigo("C123");
+            System.out.println("Codeudor encontrado:");
+            System.out.println(c);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba buscarPorCodigo(\"D001\") ===");
+        System.out.println("\n=== Buscando codeudores por nombre 'Luis' ===");
         try {
-            Deudor encontrado = deudorRepositorio.buscarPorCodigo("D001");
-            System.out.println("? Deudor encontrado:\n" + encontrado);
+            codeudorRepositorio.buscarPorNombre("Luis").forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba buscarPorNombre(\"Carlos\") ===");
+        System.out.println("\n=== Editando codeudor con código 'C123' ===");
         try {
-            deudorRepositorio.buscarPorNombre("Carlos").forEach(System.out::println);
+            Codeudor c = codeudorRepositorio.buscarPorCodigo("C123");
+            c.setSegundoNombre("Jairo");
+            c.setSegundoApellido("Villarreal");
+            c.setTieneViviendaPropia(false);
+            c.setTieneVehiculo(true);
+            codeudorRepositorio.editar(c);
+            System.out.println("Codeudor actualizado:");
+            System.out.println(codeudorRepositorio.buscarPorCodigo("C123"));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba editar() (Deudor) ===");
+        System.out.println("\n=== Eliminando codeudor con código 'C123' ===");
         try {
-            Deudor deudor = deudorRepositorio.buscarPorCodigo("D001");
-            deudor.setSegundoNombre("Freddy");
-            deudor.setEmail("john.freddy@hotmail.com");
-            deudor.setPassword("claveNuevaSegura");
-
-            deudorRepositorio.editar(deudor);
-            System.out.println("? Deudor actualizado:\n" + deudorRepositorio.buscarPorCodigo("D001"));
+            codeudorRepositorio.eliminar("C123");
+            System.out.println("Codeudor eliminado correctamente.");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba eliminar(\"D001\") ===");
+        System.out.println("\n=== Codeudores después de eliminar ===");
         try {
-            deudorRepositorio.eliminar("D001");
-            System.out.println("✔️ Deudor eliminado correctamente.");
+            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Prueba obtenerTodos() después de eliminar ===");
-        try {
-            deudorRepositorio.obtenerTodos().forEach(System.out::println);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
     }
 }

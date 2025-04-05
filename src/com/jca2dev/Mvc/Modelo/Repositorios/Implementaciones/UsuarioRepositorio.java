@@ -21,6 +21,11 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
 
         // validamos el formato del codigo antes de buscar y guardar
         ValidadorDeFormato.validarCodigo(usuario.getCodigo());
+        ValidadorDeFormato.validarNombre(usuario.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(usuario.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(usuario.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(usuario.getSegundoApellido(), "Segundo apellido");
+        ValidadorDeFormato.validarEmail(usuario.getEmail());
         // buscamos el usuario en la BD 
         boolean existe = BaseDeDatosEnMemoria.getUsuariosEnBd().stream()
                 .anyMatch(u -> u.getCodigo().equalsIgnoreCase(usuario.getCodigo()));
@@ -72,10 +77,10 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
 
         // validar el formato del codigo antes de guardar en la BD
         ValidadorDeFormato.validarCodigo(usuario.getCodigo());
-        ValidadorDeFormato.validarNombre(usuario.getPrimerNombre());
-        ValidadorDeFormato.validarNombre(usuario.getSegundoNombre());
-        ValidadorDeFormato.validarNombre(usuario.getPrimerApellido());
-        ValidadorDeFormato.validarNombre(usuario.getSegundoApellido());
+        ValidadorDeFormato.validarNombre(usuario.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(usuario.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(usuario.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(usuario.getSegundoApellido(), "Segundo apellido");
         ValidadorDeFormato.validarEmail(usuario.getEmail());
         // obtenemos el usuario (objeto) de la BD
         Usuario existente = buscarPorCodigo(usuario.getCodigo());
@@ -112,6 +117,5 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
         }
         return resultado;
     }
-
 
 }

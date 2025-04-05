@@ -157,7 +157,8 @@ public class Cobrador extends Usuario implements Serializable{
 
     @Override
     public String toString() {
-        return "Cobrador\n"
+        return  super.toString()+"\n"+
+                "Cobrador\n"
                 + "-----------------\n"
                 + "Número Identificación: " + numeroIdentificacion + "\n"
                 + "Tipo Identificación: " + tipoIdentificacion + "\n"

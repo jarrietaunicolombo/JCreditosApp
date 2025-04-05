@@ -22,10 +22,10 @@ public class DeudorRepositorio implements IDeudorRepositorio {
         }
 
         ValidadorDeFormato.validarCodigo(deudor.getCodigo());
-        ValidadorDeFormato.validarNombre(deudor.getPrimerNombre());
-        ValidadorDeFormato.validarNombre(deudor.getSegundoNombre());
-        ValidadorDeFormato.validarNombre(deudor.getPrimerApellido());
-        ValidadorDeFormato.validarNombre(deudor.getSegundoApellido());
+        ValidadorDeFormato.validarNombre(deudor.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(deudor.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(deudor.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(deudor.getSegundoApellido(), "Segundo apellido");
         ValidadorDeFormato.validarEmail(deudor.getEmail());
 
         boolean existe = BaseDeDatosEnMemoria.getDeudoresEnBd().stream()
@@ -51,7 +51,7 @@ public class DeudorRepositorio implements IDeudorRepositorio {
 
     @Override
     public List<Deudor> buscarPorNombre(String nombre) {
-        ValidadorDeFormato.validarNombre(nombre);
+        ValidadorDeFormato.validarNombre(nombre, "Primer nombre");
 
         List<Deudor> resultado = BaseDeDatosEnMemoria.getDeudoresEnBd().stream()
                 .filter(d -> d.getPrimerNombre().toLowerCase().contains(nombre.toLowerCase()))
@@ -72,10 +72,10 @@ public class DeudorRepositorio implements IDeudorRepositorio {
         }
 
         ValidadorDeFormato.validarCodigo(deudor.getCodigo());
-        ValidadorDeFormato.validarNombre(deudor.getPrimerNombre());
-        ValidadorDeFormato.validarNombre(deudor.getSegundoNombre());
-        ValidadorDeFormato.validarNombre(deudor.getPrimerApellido());
-        ValidadorDeFormato.validarNombre(deudor.getSegundoApellido());
+        ValidadorDeFormato.validarNombre(deudor.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(deudor.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(deudor.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(deudor.getSegundoApellido(), "Segundo apellido");
         ValidadorDeFormato.validarEmail(deudor.getEmail());
 
         Deudor existente = buscarPorCodigo(deudor.getCodigo());

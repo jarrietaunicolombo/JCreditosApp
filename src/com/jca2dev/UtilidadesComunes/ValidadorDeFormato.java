@@ -37,15 +37,15 @@ public class ValidadorDeFormato {
      * Valida que el nombre contenga únicamente letras y espacios. No se
      * permiten números ni caracteres especiales.
      */
-    public static void validarNombre(String nombre) {
+    public static void validarNombre(String nombre, String nombreDelCambo) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre es requerido.");
+            throw new IllegalArgumentException("El "+nombreDelCambo+" es requerido.");
         }
 
         for (char c : nombre.toCharArray()) {
             if (!Character.isLetter(c) && c != ' ') {
                 throw new IllegalArgumentException(
-                        "El nombre solo puede contener letras y espacios.");
+                        "El "+nombreDelCambo+" solo puede contener letras y espacios.");
             }
         }
 

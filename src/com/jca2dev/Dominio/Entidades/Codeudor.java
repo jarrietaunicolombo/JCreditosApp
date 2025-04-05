@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Codeudor extends Deudor  implements Serializable{
+public class Codeudor extends Deudor implements Serializable {
 
     // propidades de instancia u objeto
     private boolean tieneViviendaPropia;
@@ -75,11 +75,11 @@ public class Codeudor extends Deudor  implements Serializable{
 
     @Override
     public String toString() {
-        return "Codeudor\n"
+        return  super.toString() + "\n"
+                + "Codeudor\n"
                 + "-----------------\n"
                 + "Tiene Vivienda Propia: " + tieneViviendaPropia + "\n"
                 + "Tiene Vehículo Propio: " + tieneVehiculo + "\n"
-                + super.toString()
                 + "Prestamos que respalda: " + (prestamos != null ? prestamos.size() : 0) + "\n";
     }
 }

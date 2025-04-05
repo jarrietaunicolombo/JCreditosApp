@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Deudor extends Usuario  implements Serializable{
+public class Deudor extends Usuario implements Serializable {
 
     // propidades de instancia u objeto
     protected String numeroIdentificacion;
@@ -202,9 +202,8 @@ public class Deudor extends Usuario  implements Serializable{
 
     @Override
     public String toString() {
-        return "Deudor\n"
-                + "-----------------\n"
-                + super.toString()+"\n"
+        return super.toString() + "\n"
+                + "Deudor\n"
                 + "-----------------\n"
                 + "Número Identificación: " + numeroIdentificacion + "\n"
                 + "Tipo Identificación: " + tipoIdentificacion + "\n"

@@ -25,7 +25,10 @@ public class PrestamistaRepositorio implements IPrestamistaRepositorio {
         }
 
         ValidadorDeFormato.validarCodigo(prestamista.getCodigo());
-        ValidadorDeFormato.validarNombre(prestamista.getPrimerNombre());
+        ValidadorDeFormato.validarNombre(prestamista.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(prestamista.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(prestamista.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(prestamista.getSegundoApellido(), "Segundo apellido");
         ValidadorDeFormato.validarEmail(prestamista.getEmail());
 
         boolean existe = BaseDeDatosEnMemoria.getPrestamistasEnBd().stream()
@@ -56,7 +59,7 @@ public class PrestamistaRepositorio implements IPrestamistaRepositorio {
 
     @Override
     public List<Prestamista> buscarPorNombre(String nombre) {
-        ValidadorDeFormato.validarNombre(nombre);
+        ValidadorDeFormato.validarNombre(nombre, "Primer nombre");
 
         List<Prestamista> resultado = BaseDeDatosEnMemoria.getPrestamistasEnBd().stream()
                 .filter(p -> p.getPrimerNombre().toLowerCase().contains(nombre.toLowerCase()))
@@ -78,7 +81,10 @@ public class PrestamistaRepositorio implements IPrestamistaRepositorio {
         }
 
         ValidadorDeFormato.validarCodigo(prestamista.getCodigo());
-        ValidadorDeFormato.validarNombre(prestamista.getPrimerNombre());
+        ValidadorDeFormato.validarNombre(prestamista.getPrimerNombre(), "Primer nombre");
+        ValidadorDeFormato.validarNombre(prestamista.getSegundoNombre(), "Segundo nombre");
+        ValidadorDeFormato.validarNombre(prestamista.getPrimerApellido(), "Primer apellido");
+        ValidadorDeFormato.validarNombre(prestamista.getSegundoApellido(), "Segundo apellido");
         ValidadorDeFormato.validarEmail(prestamista.getEmail());
 
         Prestamista existente = buscarPorCodigo(prestamista.getCodigo());

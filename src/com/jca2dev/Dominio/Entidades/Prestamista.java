@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author John Carlos Arrieta Arrieta
  */
-public class Prestamista extends Usuario  implements Serializable{
+public class Prestamista extends Usuario implements Serializable {
 
     // propidades de instancia u objeto
     private double capital;
@@ -112,9 +112,8 @@ public class Prestamista extends Usuario  implements Serializable{
 
     @Override
     public String toString() {
-        return "Prestamista\n"
-                + "-----------------\n"
-                + super.toString()+"\n"
+        return super.toString() + "\n"
+                + "Prestamista\n"
                 + "-----------------\n"
                 + "Capital: " + capital + "\n"
                 + "Prestamos realizados: " + (prestamos != null ? prestamos.size() : 0) + "\n"
