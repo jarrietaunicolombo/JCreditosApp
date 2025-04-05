@@ -17,7 +17,7 @@ public interface IUsuarioRepositorio {
 
     void editar(Usuario usuario);
 
-    void eliminar(Integer id);
+    void eliminar(String codigo);
 
     List<Usuario> obtenerTodos();
 }

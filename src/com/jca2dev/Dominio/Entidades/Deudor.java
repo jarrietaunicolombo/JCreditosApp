@@ -204,6 +204,8 @@ public class Deudor extends Usuario  implements Serializable{
     public String toString() {
         return "Deudor\n"
                 + "-----------------\n"
+                + super.toString()+"\n"
+                + "-----------------\n"
                 + "Número Identificación: " + numeroIdentificacion + "\n"
                 + "Tipo Identificación: " + tipoIdentificacion + "\n"
                 + "Fecha Expedición: " + fechaExpedicion + "\n"
