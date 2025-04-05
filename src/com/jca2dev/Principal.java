@@ -1,10 +1,13 @@
 package com.jca2dev;
 
-import com.jca2dev.Dominio.Entidades.Codeudor;
+import com.jca2dev.Dominio.Constantes.GeneroEnum;
+import com.jca2dev.Dominio.Constantes.TipoDeIdentificacionEnum;
+import com.jca2dev.Dominio.Entidades.Cobrador;
 import com.jca2dev.Dominio.Entidades.Rol;
 import com.jca2dev.Mvc.Modelo.Persistencia.BaseDeDatosEnMemoria;
-import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.CodeudorRepositorio;
+import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.CobradorRepositorio;
 import com.jca2dev.Mvc.Modelo.Repositorios.Implementaciones.RolRepositorio;
+import java.time.LocalDateTime;
 
 public class Principal {
 
@@ -12,79 +15,85 @@ public class Principal {
         BaseDeDatosEnMemoria.iniciar();
 
         RolRepositorio rolRepositorio = new RolRepositorio();
-        CodeudorRepositorio codeudorRepositorio = new CodeudorRepositorio();
+        CobradorRepositorio cobradorRepositorio = new CobradorRepositorio();
 
-        System.out.println("\n=== Codeudores actualmente en el sistema ===");
+        System.out.println("\n=== Cobradores actualmente en el sistema ===");
         try {
-            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
+            cobradorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Guardando nuevo codeudor ===");
+        System.out.println("\n=== Guardando nuevo cobrador ===");
         try {
-            Rol rolCodeudor = rolRepositorio.buscarPorNombre("Codeudor");
-            Codeudor codeudor = new Codeudor("C123", "John", "Arrieta", "john.arrieta@gmail.com", rolCodeudor);
-            codeudor.setSegundoNombre("Carlos");
-            codeudor.setSegundoApellido("Arrieta");
-            codeudor.setPassword("clave123");
-            codeudor.setTieneViviendaPropia(true);
-            codeudor.setTieneVehiculo(false);
+            Rol rolCobrador = rolRepositorio.buscarPorNombre("Cobrador");
+            Cobrador nuevo = new Cobrador("C123", "John", "Arrieta", "john.cobrador@ejemplo.com", rolCobrador);
+            nuevo.setSegundoNombre("Carlos");
+            nuevo.setSegundoApellido("Arrieta");
+            nuevo.setNumeroIdentificacion("111222333");
+            nuevo.setTipoIdentificacion(TipoDeIdentificacionEnum.CEDULA);
+            nuevo.setFechaExpedicion(LocalDateTime.now().minusYears(3));
+            nuevo.setLugarExpedicion("Cartagena");
+            nuevo.setGenero(GeneroEnum.MASCULINO);
+            nuevo.setFoto("perfil_cobrador.jpg");
+            nuevo.setDireccion("Calle 123 #45-67");
+            nuevo.setTelefono("3001234567");
+            nuevo.setVehiculo("Moto - Yamaha FZ");
+            nuevo.setEfectividad(0.92);
+            nuevo.setPorcentajeGanancia(15.0);
+            nuevo.setPassword("clave123");
 
-            codeudorRepositorio.guardar(codeudor);
-            System.out.println("Codeudor guardado exitosamente.");
+            cobradorRepositorio.guardar(nuevo);
+            System.out.println("Cobrador guardado correctamente.");
         } catch (Exception e) {
             System.out.println("Error al guardar: " + e.getMessage());
         }
 
-        System.out.println("\n=== Codeudores después de guardar ===");
+        System.out.println("\n=== Cobradores después de guardar ===");
         try {
-            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
+            cobradorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Buscando codeudor por código 'C123' ===");
+        System.out.println("\n=== Buscar cobrador por código 'C123' ===");
         try {
-            Codeudor c = codeudorRepositorio.buscarPorCodigo("C123");
-            System.out.println("Codeudor encontrado:");
-            System.out.println(c);
+            var resultado = cobradorRepositorio.buscarPorCodigo("C123");
+            System.out.println("Cobrador encontrado:\n" + resultado);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Buscando codeudores por nombre 'Luis' ===");
+        System.out.println("\n=== Buscar cobradores por nombre 'John' ===");
         try {
-            codeudorRepositorio.buscarPorNombre("Luis").forEach(System.out::println);
+            cobradorRepositorio.buscarPorNombre("John").forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("\n=== Editando codeudor con código 'C123' ===");
+        System.out.println("\n=== Editar cobrador con código 'C123' ===");
         try {
-            Codeudor c = codeudorRepositorio.buscarPorCodigo("C123");
-            c.setSegundoNombre("Jairo");
-            c.setSegundoApellido("Villarreal");
-            c.setTieneViviendaPropia(false);
-            c.setTieneVehiculo(true);
-            codeudorRepositorio.editar(c);
-            System.out.println("Codeudor actualizado:");
-            System.out.println(codeudorRepositorio.buscarPorCodigo("C123"));
+            var existente = cobradorRepositorio.buscarPorCodigo("C123");
+            existente.setTelefono("3129876543");
+            existente.setVehiculo("Bicicleta eléctrica");
+            existente.setEmail("john.cobrador.editado@ejemplo.com");
+            cobradorRepositorio.editar(existente);
+            System.out.println("Cobrador actualizado:\n" + existente);
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al editar: " + e.getMessage());
         }
 
-        System.out.println("\n=== Eliminando codeudor con código 'C123' ===");
+        System.out.println("\n=== Eliminar cobrador con código 'C123' ===");
         try {
-            codeudorRepositorio.eliminar("C123");
-            System.out.println("Codeudor eliminado correctamente.");
+            cobradorRepositorio.eliminar("C123");
+            System.out.println("Cobrador eliminado correctamente.");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al eliminar: " + e.getMessage());
         }
 
-        System.out.println("\n=== Codeudores después de eliminar ===");
+        System.out.println("\n=== Cobradores después de eliminar ===");
         try {
-            codeudorRepositorio.obtenerTodos().forEach(System.out::println);
+            cobradorRepositorio.obtenerTodos().forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
